@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -18,9 +17,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(exclude = {"images"})
 @AllArgsConstructor
-@Document
+@org.springframework.data.mongodb.core.mapping.Document
 @GraphQLType
-public class Documents {
+public class Document {
     @Id
     private String id;
 
@@ -36,7 +35,6 @@ public class Documents {
 
     @Column(name = "verified", nullable = false)
     private boolean verified = true;
-
 
     private String date;
     private String sender;
