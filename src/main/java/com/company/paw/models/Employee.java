@@ -1,9 +1,7 @@
 package com.company.paw.models;
 
 import io.leangen.graphql.annotations.types.GraphQLType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +16,8 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(exclude = {"images"})
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Document
 @GraphQLType
 public class Employee {
@@ -36,15 +36,6 @@ public class Employee {
 
     @Column(name = "verified", nullable = false)
     private boolean verified = true;
-
-    public Employee(String name, String nationalId, String employeeId, String address, String phoneNumber, boolean isManager) {
-        this.name = name;
-        this.nationalId = nationalId;
-        this.employeeId = employeeId;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.isManager = isManager;
-    }
 
     private String name;
     private String nationalId;

@@ -2,6 +2,7 @@ package com.company.paw.models;
 
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(exclude = {"products"})
 @AllArgsConstructor
+@Builder
 @Document
 @GraphQLType
 public class Organization {
@@ -45,6 +47,6 @@ public class Organization {
     private String username;
     private String password;
     private String avatar;
-    private Employee employees;
+    private List<Employee> employees;
     private List<Product> products = new ArrayList<>();
 }
