@@ -12,7 +12,7 @@ public class DbSeeder implements CommandLineRunner {
     private final EmployeeRepository employeeRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         init();
     }
 

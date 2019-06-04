@@ -1,5 +1,6 @@
 package com.company.paw.models;
 
+import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"products"})
 @AllArgsConstructor
 @Document
+@GraphQLType
 public class Organization {
     @Id
     private String id;

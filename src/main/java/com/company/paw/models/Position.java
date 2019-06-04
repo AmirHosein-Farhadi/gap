@@ -1,5 +1,6 @@
 package com.company.paw.models;
 
+import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import java.util.Date;
 @EqualsAndHashCode
 @AllArgsConstructor
 @Document
+@GraphQLType
 public class Position {
     @Id
     private String id;

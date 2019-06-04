@@ -1,5 +1,6 @@
 package com.company.paw.models;
 
+import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"images"})
 @AllArgsConstructor
 @Document
+@GraphQLType
 public class Product {
     @Id
     private String id;
