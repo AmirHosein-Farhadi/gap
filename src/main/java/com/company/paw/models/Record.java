@@ -2,6 +2,7 @@ package com.company.paw.models;
 
 import com.company.paw.models.Audits.AuditModel;
 import com.company.paw.models.Audits.Product;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,12 +17,23 @@ import java.util.Date;
 @Document
 @GraphQLType
 public class Record extends AuditModel {
+    @GraphQLNonNull
     private Employee user;
+
+    @GraphQLNonNull
     private Product product;
+
+    @GraphQLNonNull
     private Organization organization;
+
+    @GraphQLNonNull
     private Date time;
-    private Request request;
-    private String description;
+
+    @GraphQLNonNull
     private boolean status;
+
+    @GraphQLNonNull
     private boolean isReturning;
+
+    private String description;
 }

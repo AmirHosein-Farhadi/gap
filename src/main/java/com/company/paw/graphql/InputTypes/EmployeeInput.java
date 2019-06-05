@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeInput {
-    private String name;
+    private String fullName;
     private String nationalId;
     private String employeeId;
     private String address;

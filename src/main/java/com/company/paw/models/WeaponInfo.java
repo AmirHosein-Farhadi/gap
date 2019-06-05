@@ -1,6 +1,7 @@
 package com.company.paw.models;
 
 import com.company.paw.models.Audits.AuditModel;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @GraphQLType
 public class WeaponInfo extends AuditModel {
+    @GraphQLNonNull
     private String type;
+
+    @GraphQLNonNull
     private WeaponCategory category;
 }

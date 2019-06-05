@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrganizationInput {
     private String name;
+    private String state;
     private String city;
     private String address;
     private String phoneNumber;

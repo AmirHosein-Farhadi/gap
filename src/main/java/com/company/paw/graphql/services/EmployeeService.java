@@ -48,7 +48,7 @@ public class EmployeeService {
 
     private Employee addInput(EmployeeInput input) {
         return Employee.builder()
-                .name(input.getName())
+                .fullName(input.getFullName())
                 .nationalId(input.getNationalId())
                 .employeeId(input.getEmployeeId())
                 .address(input.getAddress())
@@ -63,8 +63,8 @@ public class EmployeeService {
         Employee employee = employeeRepository.findById(inputId).orElse(new Employee());
         //todo throw error if required fields are Null
         //but also is handled in front end
-        if (!input.getName().isEmpty())
-            employee.setName(input.getName());
+        if (!input.getFullName().isEmpty())
+            employee.setFullName(input.getFullName());
         if (!input.getNationalId().isEmpty())
             employee.setNationalId(input.getNationalId());
         if (!input.getEmployeeId().isEmpty())

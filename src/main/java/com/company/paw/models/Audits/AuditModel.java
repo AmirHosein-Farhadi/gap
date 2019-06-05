@@ -1,5 +1,7 @@
 package com.company.paw.models.Audits;
 
+import io.leangen.graphql.annotations.GraphQLId;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,8 @@ import java.util.Date;
 @GraphQLInterface(name = "AuditModel")
 public abstract class AuditModel {
     @Id
+    @GraphQLId
+    @GraphQLNonNull
     private String id;
 
     @Temporal(TemporalType.TIMESTAMP)

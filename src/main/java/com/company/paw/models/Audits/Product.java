@@ -4,6 +4,7 @@ import com.company.paw.models.Employee;
 import com.company.paw.models.Organization;
 import com.company.paw.models.Record;
 import com.company.paw.models.Request;
+import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,10 +19,17 @@ import java.util.List;
 @NoArgsConstructor
 @GraphQLInterface(name = "AuditModel")
 public abstract class Product extends AuditModel {
+    @GraphQLNonNull
     private String serial;
+
+    @GraphQLNonNull
     private Request request;
+
     private List<Record> records;
+
+    @GraphQLNonNull
     private Organization organization;
+
     private List<String> images;
     private Employee currentUser;
 }
