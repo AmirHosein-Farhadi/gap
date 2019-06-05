@@ -1,9 +1,5 @@
 package com.company.paw.models;
 
-import io.leangen.graphql.annotations.types.GraphQLType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,14 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
-@Data
-@EqualsAndHashCode(exclude = {"images"})
-@AllArgsConstructor
-@org.springframework.data.mongodb.core.mapping.Document
-@GraphQLType
-public class Document {
+public class Request {
     @Id
     private String id;
 
@@ -36,7 +26,9 @@ public class Document {
     @Column(name = "verified", nullable = false)
     private boolean verified = true;
 
-    private String date;
-    private String sender;
-    private List<String> images;
+    private Organization organization;
+    private String title;
+    private String image;
+    private String description;
+    private Date dateOnImage;
 }

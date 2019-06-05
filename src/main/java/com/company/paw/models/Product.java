@@ -37,10 +37,14 @@ public class Product {
     @Column(name = "verified", nullable = false)
     private boolean verified = true;
 
+    //add an enum for weapon type
+
     private String serial;
-    private ProductInfo productInfo;
+    private Request request;
+    private List<Record> records;
+    private ProductType productType;
     private Organization organization;
-    private Employee currentUser;
     private List<String> images;
+    private Employee currentUser;
     private boolean isAvailable;
 }

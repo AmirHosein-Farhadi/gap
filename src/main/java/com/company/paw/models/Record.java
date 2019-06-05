@@ -38,8 +38,9 @@ public class Record {
 
     private Employee user;
     private Product product;
-    private String time;
-    private String command;
+    private Organization organization;
+    private Date time;
+    private Request request;
     private String description;
     private boolean status;
     private boolean isReturning;

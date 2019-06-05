@@ -18,5 +18,4 @@ public class EmployeeInput {
     private String positionId;
     private String organizationId;
     private List<String> images;
-    private boolean isManager;
 }

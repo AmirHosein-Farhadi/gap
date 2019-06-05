@@ -2,7 +2,6 @@ package com.company.paw.models;
 
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,17 +12,14 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"products"})
+@EqualsAndHashCode
 @AllArgsConstructor
-@Builder
 @Document
 @GraphQLType
-public class Organization {
+public class ProductType {
     @Id
     private String id;
 
@@ -41,21 +37,9 @@ public class Organization {
     private boolean verified = true;
 
 
-
-    //todo isManager
-
-
-    private String name;
-    //todo add entity
-    private String state;
-    private String city;
-
-    private String address;
-    private String phoneNumber;
-    //to be decided after test
-    private String username;
-    private String password;
-
-    private List<Employee> employees;
-    private List<Product> products;
+    //todo add entity for weapon type
+    //todo add enum for weapon category
+    private String weaponsName;
+    private boolean isWeapon;
+    private boolean isPrivate;
 }
