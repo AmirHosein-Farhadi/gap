@@ -1,6 +1,7 @@
 package com.company.paw.models;
 
 import com.company.paw.models.Audits.AuditModel;
+import com.company.paw.models.enums.WeaponCategory;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.AllArgsConstructor;

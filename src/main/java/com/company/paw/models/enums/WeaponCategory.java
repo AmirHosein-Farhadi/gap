@@ -1,4 +1,4 @@
-package com.company.paw.models;
+package com.company.paw.models.enums;
 
 public enum WeaponCategory {
     COLD,
