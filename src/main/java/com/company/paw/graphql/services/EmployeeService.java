@@ -56,7 +56,6 @@ public class EmployeeService {
                 .position(positionRepository.findById(input.getPositionId()).get())
                 .organization(organizationRepository.findById(input.getOrganizationId()).get())
                 .images(input.getImages())
-                .isManager(input.isManager())
                 .build();
     }
 
@@ -80,7 +79,6 @@ public class EmployeeService {
             employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         if (!input.getImages().isEmpty())
             employee.setImages(input.getImages());
-        employee.setManager(input.isManager());
         return employee;
     }
 }

@@ -1,4 +1,4 @@
-package com.company.paw.graphql;
+package com.company.paw.graphql.settings;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

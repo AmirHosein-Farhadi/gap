@@ -1,7 +1,6 @@
 package com.company.paw.models;
 
-import com.company.paw.models.Audits.AuditModel;
-import io.leangen.graphql.annotations.types.GraphQLType;
+import com.company.paw.models.Audits.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,11 +8,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Document
-@GraphQLType
-public class Position extends AuditModel {
-    private String title;
+public class Weapon extends Product {
+    private WeaponInfo info;
 }

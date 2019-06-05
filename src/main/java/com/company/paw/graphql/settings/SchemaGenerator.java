@@ -1,4 +1,4 @@
-package com.company.paw.graphql;
+package com.company.paw.graphql.settings;
 
 import com.company.paw.graphql.services.EmployeeService;
 import com.company.paw.graphql.services.OrganizationService;

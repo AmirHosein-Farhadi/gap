@@ -1,26 +1,21 @@
-package com.company.paw.models;
+package com.company.paw.models.Audits;
 
-import io.leangen.graphql.annotations.types.GraphQLType;
+import io.leangen.graphql.annotations.types.GraphQLInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"images"})
-@AllArgsConstructor
-@Document
-@GraphQLType
-public class Product {
+@GraphQLInterface(name = "AuditModel")
+public abstract class AuditModel {
     @Id
     private String id;
 
@@ -36,15 +31,4 @@ public class Product {
 
     @Column(name = "verified", nullable = false)
     private boolean verified = true;
-
-    //add an enum for weapon type
-
-    private String serial;
-    private Request request;
-    private List<Record> records;
-    private ProductType productType;
-    private Organization organization;
-    private List<String> images;
-    private Employee currentUser;
-    private boolean isAvailable;
 }

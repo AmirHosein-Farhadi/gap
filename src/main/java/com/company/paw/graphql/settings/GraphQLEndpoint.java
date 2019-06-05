@@ -1,4 +1,4 @@
-package com.company.paw.graphql;
+package com.company.paw.graphql.settings;
 
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;

@@ -25,7 +25,6 @@ public class OrganizationService {
                 .phoneNumber(input.getPhoneNumber())
                 .username(input.getUsername())
                 .password(input.getPassword())
-                .avatar(input.getAvatar())
                 .build();
     }
 }
