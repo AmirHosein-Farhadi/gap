@@ -22,11 +22,10 @@ public abstract class Product extends AuditModel {
     @GraphQLNonNull
     private Request request;
 
-    private List<Record> records;
-
     @GraphQLNonNull
     private Organization organization;
 
+    private List<Record> records;
     private List<Image> images;
     private Employee currentUser;
 }
