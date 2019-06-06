@@ -1,16 +1,14 @@
 package com.company.paw.graphql.InputTypes;
 
+import com.company.paw.models.enums.WeaponCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DocumentInput {
-    private String date;
-    private String sender;
-    private List<String> images;
+public class WeaponInfoInput {
+    private String type;
+    private WeaponCategory category;
 }

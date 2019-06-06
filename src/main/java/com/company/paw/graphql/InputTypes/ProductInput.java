@@ -1,12 +1,11 @@
 package com.company.paw.graphql.InputTypes;
 
-import com.company.paw.models.Employee;
-import com.company.paw.models.Organization;
-import com.company.paw.models.Request;
-import com.company.paw.models.WeaponInfo;
+import com.company.paw.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +15,13 @@ public class ProductInput {
     private Request request;
     private Organization organization;
     private Employee currentUser;
+    private List<Record> records;
+    private List<Image> images;
+
+    //plate specific
     private boolean isPrivate;
+    private Plate mappedPlate;
+
+    //weapon specific
     private WeaponInfo info;
 }

@@ -1,5 +1,6 @@
 package com.company.paw.graphql.InputTypes;
 
+import com.company.paw.models.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,5 +18,5 @@ public class EmployeeInput {
     private String phoneNumber;
     private String positionId;
     private String organizationId;
-    private List<String> images;
+    private List<Image> images;
 }

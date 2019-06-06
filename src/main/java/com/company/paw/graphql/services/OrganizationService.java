@@ -30,24 +30,8 @@ public class OrganizationService {
         return organizationRepository.save(addInput(input));
     }
 
-    @GraphQLMutation
-    public Organization updateOrganization(OrganizationInput input, String id) {
+    //todo add Update and Delete
 
-    }
-
-    @GraphQLMutation
-    private Organization updateInput(OrganizationInput input, String id) {
-        Organization organization = organizationRepository.findById(id).get();
-        if (!input.getName().isEmpty())
-            organization.setName();
-        if (!input.getName().isEmpty())
-            organization.setName();
-        if (!input.getName().isEmpty())
-            organization.setName();
-        if (!input.getName().isEmpty())
-            organization.setName();
-
-    }
 
     private Organization addInput(OrganizationInput input) {
         return Organization.builder()
