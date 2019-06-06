@@ -1,9 +1,9 @@
 package com.company.paw.Repositories;
 
-import com.company.paw.models.Weapon;
+import com.company.paw.models.State;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WeaponRepository extends MongoRepository<Weapon, String> {
+public interface StateRepository extends MongoRepository<State, String> {
 }

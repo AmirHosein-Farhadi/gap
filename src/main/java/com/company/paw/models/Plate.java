@@ -6,5 +6,5 @@ import io.leangen.graphql.annotations.GraphQLNonNull;
 public class Plate extends Product {
     @GraphQLNonNull
     private boolean isPrivate;
-    private Plate mappedplate;
+    private Plate mappedPlate;
 }

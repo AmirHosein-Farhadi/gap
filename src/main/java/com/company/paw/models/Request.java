@@ -23,7 +23,7 @@ public class Request extends AuditModel {
     private String title;
 
     @GraphQLNonNull
-    private String image;
+    private Image image;
 
     @GraphQLNonNull
     private Date dateOnImage;

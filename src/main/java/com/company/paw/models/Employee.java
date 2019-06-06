@@ -33,5 +33,5 @@ public class Employee extends AuditModel {
 
     private String address;
     private String phoneNumber;
-    private List<String> images;
+    private List<Image> images;
 }

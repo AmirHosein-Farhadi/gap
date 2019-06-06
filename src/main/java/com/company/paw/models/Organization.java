@@ -21,11 +21,12 @@ import java.util.List;
 public class Organization extends AuditModel {
     @GraphQLNonNull
     private String name;
-    //todo add entity
+
     @GraphQLNonNull
-    private String state;
+    private State state;
+
     @GraphQLNonNull
-    private String city;
+    private City city;
 
     @GraphQLNonNull
     private String address;
