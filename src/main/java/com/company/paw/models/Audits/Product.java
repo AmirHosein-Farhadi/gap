@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"images"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
-@GraphQLInterface(name = "AuditModel")
+@GraphQLInterface(name = "Product")
 public abstract class Product extends AuditModel {
     @GraphQLNonNull
     private String serial;

@@ -21,7 +21,7 @@ public class OrganizationService {
     }
 
     @GraphQLQuery
-    public Organization getEmployee(String id) {
+    public Organization getOrganization(String id) {
         return organizationRepository.findById(id).orElse(null);
     }
 
