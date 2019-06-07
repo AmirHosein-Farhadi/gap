@@ -1,6 +1,7 @@
 package com.company.paw.graphql.InputTypes;
 
-import com.company.paw.models.*;
+import com.company.paw.models.WeaponCategory;
+import com.company.paw.models.WeaponType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +13,17 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductInput {
     private String serial;
-    private Request request;
-    private Organization organization;
-    private Employee currentUser;
-    private List<Record> records;
-    private List<Image> images;
+    private String requestId;
+    private String organizationId;
+    private String currentUserId;
+    private List<String> recordsId;
+    private List<String> imagesId;
 
     //plate specific
     private boolean isPrivate;
-    private Plate mappedPlate;
+    private String mappedPlateId;
 
     //weapon specific
-    private WeaponInfo info;
+    private WeaponType weaponTypeId;
+    private WeaponCategory weaponCategoryId;
 }

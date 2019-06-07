@@ -17,22 +17,22 @@ public class StateService {
     private final StateRepository stateRepository;
 
     @GraphQLQuery
-    private List<State> allStates() {
+    public List<State> allStates() {
         return stateRepository.findAll();
     }
 
     @GraphQLQuery
-    private State getState(String id) {
+    public State getState(String id) {
         return stateRepository.findById(id).orElse(null);
     }
 
     @GraphQLMutation
-    private State addState(String name) {
+    public State addState(String name) {
         return stateRepository.save(new State(name, Collections.emptyList()));
     }
 
     @GraphQLMutation
-    private State addSubCity(State state, City city) {
+    public State addSubCity(State state, City city) {
         State s = stateRepository.findById(state.getId()).orElse(null);
         if (s != null)
             s.addSubCity(city);

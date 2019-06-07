@@ -1,11 +1,12 @@
 package com.company.paw.models;
 
 import com.company.paw.models.Audits.AuditModel;
-import com.company.paw.models.enums.WeaponCategory;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -14,10 +15,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document
 @GraphQLType
-public class WeaponInfo extends AuditModel {
+public class WeaponType extends AuditModel {
     @GraphQLNonNull
-    private String type;
+    private String name;
 
     @GraphQLNonNull
     private WeaponCategory category;
+
+    private List<Weapon> weapons;
 }

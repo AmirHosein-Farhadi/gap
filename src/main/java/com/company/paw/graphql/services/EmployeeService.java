@@ -18,6 +18,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
     private final OrganizationRepository organizationRepository;
+    private final ImageService imageService;
 
     @GraphQLQuery
     public List<Employee> allEmployees() {
@@ -47,15 +48,17 @@ public class EmployeeService {
     }
 
     private Employee addInput(EmployeeInput input) {
+
+
         return Employee.builder()
                 .fullName(input.getFullName())
                 .nationalId(input.getNationalId())
                 .employeeId(input.getEmployeeId())
                 .address(input.getAddress())
                 .phoneNumber(input.getPhoneNumber())
-                .position(positionRepository.findById(input.getPositionId()).get())
-                .organization(organizationRepository.findById(input.getOrganizationId()).get())
-                .images(input.getImages())
+                .position(positionRepository.findById(input.getPositionId()).orElse(null))
+                .organization(organizationRepository.findById(input.getOrganizationId()).orElse(null))
+                .images(imageService.imagesIdToImages(input.getImages()))
                 .build();
     }
 
@@ -74,11 +77,11 @@ public class EmployeeService {
         if (!input.getPhoneNumber().isEmpty())
             employee.setPhoneNumber(input.getPhoneNumber());
         if (!input.getPositionId().isEmpty())
-            employee.setPosition(positionRepository.findById(input.getPositionId()).get());
+            employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
         if (!input.getOrganizationId().isEmpty())
-            employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+            employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
         if (!input.getImages().isEmpty())
-            employee.setImages(input.getImages());
+            employee.setImages(imageService.imagesIdToImages(input.getImages()));
         return employee;
     }
 }

@@ -1,8 +1,6 @@
 package com.company.paw.graphql.settings;
 
-import com.company.paw.graphql.services.EmployeeService;
-import com.company.paw.graphql.services.OrganizationService;
-import com.company.paw.graphql.services.PositionService;
+import com.company.paw.graphql.services.*;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import io.leangen.geantyref.GenericTypeReflector;
@@ -25,9 +23,17 @@ import java.util.Set;
 @AllArgsConstructor
 @Service
 public class SchemaGenerator {
+    private final CityService cityService;
     private final EmployeeService employeeService;
-    private final PositionService positionService;
+    private final ImageService imageService;
     private final OrganizationService organizationService;
+    private final PlateService plateService;
+    private final PositionService positionService;
+    private final RecordsService recordsService;
+    private final RequestService requestService;
+    private final StateService stateService;
+    private final WeaponTypeService weaponTypeService;
+    private final WeaponService weaponService;
 
     @Bean
     public GraphQL getGraphQL() {
@@ -58,7 +64,8 @@ public class SchemaGenerator {
                 .withResolverBuilders(
                         //Resolve by annotations
                         new AnnotatedResolverBuilder())
-                .withOperationsFromSingletons(employeeService, positionService, organizationService)
+                .withOperationsFromSingletons(cityService, employeeService, imageService, organizationService, plateService,
+                        positionService, recordsService, requestService, stateService, weaponTypeService, weaponService)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
         return GraphQL.newGraphQL(schema).build();

@@ -17,7 +17,7 @@ import java.util.List;
 @Document
 @GraphQLType
 public class Organization extends AuditModel {
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String name;
 
     @GraphQLNonNull
@@ -26,10 +26,10 @@ public class Organization extends AuditModel {
     @GraphQLNonNull
     private City city;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String address;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String phoneNumber;
     //to be decided after test
     private String username;

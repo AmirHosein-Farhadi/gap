@@ -19,7 +19,6 @@ public abstract class Product extends AuditModel {
     @GraphQLNonNull
     private String serial;
 
-    @GraphQLNonNull
     private Request request;
 
     @GraphQLNonNull

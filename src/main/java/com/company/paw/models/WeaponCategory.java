@@ -12,8 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document
 @GraphQLType
-public class Image extends AuditModel {
+public class WeaponCategory extends AuditModel {
     private String name;
-    //todo
-    private String path;
 }

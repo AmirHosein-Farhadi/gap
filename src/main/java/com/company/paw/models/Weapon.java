@@ -15,5 +15,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @GraphQLType
 public class Weapon extends Product {
     @GraphQLNonNull
-    private WeaponInfo info;
+    private WeaponType type;
 }
