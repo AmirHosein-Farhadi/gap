@@ -13,6 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping
 @RestController
+@CrossOrigin
 public class GraphQLEndpoint {
     private final GraphQL graphQL;
 
