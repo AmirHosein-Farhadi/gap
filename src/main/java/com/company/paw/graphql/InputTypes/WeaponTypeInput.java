@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class WeaponInfoInput {
+public class WeaponTypeInput {
     private String type;
-    private String weaponCategory;
+    private String weaponCategoryId;
 }

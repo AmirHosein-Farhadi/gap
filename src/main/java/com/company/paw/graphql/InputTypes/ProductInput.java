@@ -1,7 +1,5 @@
 package com.company.paw.graphql.InputTypes;
 
-import com.company.paw.models.WeaponCategory;
-import com.company.paw.models.WeaponType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +22,6 @@ public class ProductInput {
     private String mappedPlateId;
 
     //weapon specific
-    private WeaponType weaponTypeId;
-    private WeaponCategory weaponCategoryId;
+    private String weaponTypeId;
+    private String weaponCategoryId;
 }

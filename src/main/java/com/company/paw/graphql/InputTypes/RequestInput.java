@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RequestInput {
     private String organizationId;
-    private String titleId;
     private String imageId;
+    private String title;
     private String dateOnImage;
     private String description;
 }

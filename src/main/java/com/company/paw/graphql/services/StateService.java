@@ -1,5 +1,6 @@
 package com.company.paw.graphql.services;
 
+import com.company.paw.Repositories.CityRepository;
 import com.company.paw.Repositories.StateRepository;
 import com.company.paw.models.City;
 import com.company.paw.models.State;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class StateService {
     private final StateRepository stateRepository;
+    private final CityRepository cityRepository;
 
     @GraphQLQuery
     public List<State> allStates() {
@@ -32,10 +35,10 @@ public class StateService {
     }
 
     @GraphQLMutation
-    public State addSubCity(State state, City city) {
-        State s = stateRepository.findById(state.getId()).orElse(null);
-        if (s != null)
-            s.addSubCity(city);
-        return s;
+    public State addSubCity(String stateId, String cityId) {
+        Optional<State> stateOptional = stateRepository.findById(stateId);
+        Optional<City> cityOptional = cityRepository.findById(cityId);
+        stateOptional.ifPresent(state -> state.addSubCity(cityOptional.orElse(null)));
+        return stateRepository.save(stateOptional.get());
     }
 }
