@@ -5,6 +5,7 @@ import com.company.paw.models.Audits.Product;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 @Document
 @GraphQLType
 public class Organization extends AuditModel {
-    //    @GraphQLNonNull
+    @GraphQLNonNull
     private String name;
 
     @GraphQLNonNull
@@ -26,15 +27,19 @@ public class Organization extends AuditModel {
     @GraphQLNonNull
     private City city;
 
-    //    @GraphQLNonNull
+    @GraphQLNonNull
     private String address;
 
-    //    @GraphQLNonNull
+    @GraphQLNonNull
     private String phoneNumber;
-    //to be decided after test
+
+    //todo to be decided after test
     private String username;
     private String password;
 
+    @DBRef
     private List<Employee> employees;
+
+    @DBRef
     private List<Product> products;
 }

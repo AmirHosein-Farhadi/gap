@@ -5,11 +5,14 @@ import com.company.paw.Repositories.OrganizationRepository;
 import com.company.paw.Repositories.PositionRepository;
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
+import com.company.paw.models.Organization;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,8 +34,18 @@ public class EmployeeService {
     }
 
     @GraphQLMutation
+    @Transactional
     public Employee addEmployee(EmployeeInput employeeInput) {
-        return employeeRepository.save(addInput(employeeInput));
+        Employee employee = addInput(employeeInput);
+        Organization organization = employee.getOrganization();
+        if (organization.getEmployees() != null)
+            organization.getEmployees().add(employee);
+        else {
+            organization.setEmployees(Collections.singletonList(employee));
+        }
+        employeeRepository.save(employee);
+        organizationRepository.save(organization);
+        return employee;
     }
 
     @GraphQLMutation
@@ -49,17 +62,17 @@ public class EmployeeService {
 
     private Employee addInput(EmployeeInput input) {
 
-
-        return Employee.builder()
-                .fullName(input.getFullName())
-                .nationalId(input.getNationalId())
-                .employeeId(input.getEmployeeId())
-                .address(input.getAddress())
-                .phoneNumber(input.getPhoneNumber())
-                .position(positionRepository.findById(input.getPositionId()).orElse(null))
-                .organization(organizationRepository.findById(input.getOrganizationId()).orElse(null))
-                .images(imageService.imagesIdToImages(input.getImages()))
-                .build();
+        Employee employee = new Employee();
+        employee.setFullName(input.getFullName());
+        employee.setNationalId(input.getNationalId());
+        employee.setEmployeeId(input.getEmployeeId());
+        employee.setAddress(input.getAddress());
+        employee.setPhoneNumber(input.getPhoneNumber());
+        employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
+        employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        if (input.getImages() != null)
+            employee.setImages(imageService.imagesIdToImages(input.getImages()));
+        return employee;
     }
 
     private Employee updateInput(String inputId, EmployeeInput input) {

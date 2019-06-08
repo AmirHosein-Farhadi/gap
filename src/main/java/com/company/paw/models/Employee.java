@@ -1,9 +1,9 @@
 package com.company.paw.models;
 
 import com.company.paw.models.Audits.AuditModel;
-import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -16,22 +16,24 @@ import java.util.List;
 @Document
 @GraphQLType
 public class Employee extends AuditModel {
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String fullName;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String nationalId;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private String employeeId;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private Position position;
 
-    @GraphQLNonNull
+    //    @GraphQLNonNull
     private Organization organization;
+
+    @DBRef
+    private List<Image> images;
 
     private String address;
     private String phoneNumber;
-    private List<Image> images;
 }
