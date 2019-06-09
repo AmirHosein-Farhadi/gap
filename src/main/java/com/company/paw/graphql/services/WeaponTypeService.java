@@ -1,9 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.WeaponCategoryRepository;
 import com.company.paw.Repositories.WeaponTypeRepository;
-import com.company.paw.graphql.InputTypes.WeaponTypeInput;
-import com.company.paw.models.WeaponCategory;
 import com.company.paw.models.WeaponType;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -12,13 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class WeaponTypeService {
     private final WeaponTypeRepository weaponTypeRepository;
-    private final WeaponCategoryRepository weaponCategoryRepository;
 
     @GraphQLQuery
     public List<WeaponType> allWeaponTypes() {
@@ -31,18 +26,14 @@ public class WeaponTypeService {
     }
 
     @GraphQLMutation
-    public WeaponType addWeaponTypes(WeaponTypeInput input) {
-        Optional<WeaponCategory> weaponCategoryOptional = weaponCategoryRepository.findById(input.getWeaponCategoryId());
-        return weaponTypeRepository.save(new WeaponType(input.getName(), weaponCategoryOptional.orElse(null), Collections.emptyList()));
+    public WeaponType addWeaponTypes(String name) {
+        return weaponTypeRepository.save(new WeaponType(name, Collections.emptyList()));
     }
 
     @GraphQLMutation
-    public WeaponType editWeaponType(String id, WeaponTypeInput input) {
+    public WeaponType editWeaponType(String id, String name) {
         WeaponType weaponType = weaponTypeRepository.findById(id).get();
-        if (input.getWeaponCategoryId() != null)
-            weaponType.setCategory(weaponCategoryRepository.findById(input.getWeaponCategoryId()).orElse(null));
-        if (input.getName() != null)
-            weaponType.setName(input.getName());
+        weaponType.setName(name);
         return weaponTypeRepository.save(weaponType);
     }
 }

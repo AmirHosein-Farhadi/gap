@@ -16,18 +16,11 @@ import java.util.Date;
 @Document
 @GraphQLType
 public class Request extends AuditModel {
-    @GraphQLNonNull
+    private Employee employee;
     private Organization organization;
-    private  Employee employee;
-
-    @GraphQLNonNull
     private String title;
-
-    @GraphQLNonNull
     private Image image;
-
-    @GraphQLNonNull
     private Date dateOnImage;
-
     private String description;
+    private Report report;      //unhandled Request ,if Report is null
 }

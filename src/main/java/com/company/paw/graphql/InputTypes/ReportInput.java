@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecordInput {
+public class ReportInput {
     private String userId;
-    private String productId;
     private String organizationId;
-    private String time;
-    private boolean status;
-    private boolean isReturning;
+    private String productId;
+    private String requestId;
+    private String borrowTime;
+    private boolean borrowStatus;
     private String description;
 }

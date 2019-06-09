@@ -14,6 +14,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @GraphQLType
 public class Image extends AuditModel {
     private String name;
-    //todo
     private String path;
 }

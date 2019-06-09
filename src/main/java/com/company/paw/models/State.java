@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(exclude = {"cities"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,9 +20,5 @@ public class State extends AuditModel {
     private String name;
 
     @DBRef
-    private List<City> cities = new ArrayList<>();
-
-    public void addSubCity(City city) {
-        this.cities.add(city);
-    }
+    private List<City> cities;
 }

@@ -14,6 +14,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @GraphQLType
 public class Position extends AuditModel {
-    @GraphQLNonNull
     private String title;
 }

@@ -1,9 +1,9 @@
 package com.company.paw.Repositories;
 
-import com.company.paw.models.Record;
+import com.company.paw.models.Report;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecordRepository extends MongoRepository<Record, String> {
+public interface ReportRepository extends MongoRepository<Report, String> {
 }

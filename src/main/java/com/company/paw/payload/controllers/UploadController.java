@@ -37,7 +37,7 @@ public class UploadController {
     private final ImageRepository imageRepository;
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public Image uploadFile(@RequestParam("file") MultipartFile file) {
 //        try {
 //            MultipartFile multiPartFile = new MockMultipartFile(FilenameUtils.getBaseName(file.getOriginalFilename()).concat(new SimpleDateFormat("yyyyMMddHHmm").format(new Date()))+ "." + FilenameUtils.getExtension(file.getOriginalFilename()),file.getInputStream());
 //        } catch (IOException e) {
@@ -46,22 +46,17 @@ public class UploadController {
 //        String currentDate = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
 //        file.getOriginalFilename().replace(file.getOriginalFilename(), FilenameUtils.getBaseName(file.getOriginalFilename()).concat(currentDate) + "." + FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase());
         String fileName = fileStorageService.storeFile(file);
-        imageRepository.save(new Image(file.getOriginalFilename(),"/downloadFile/" + file.getOriginalFilename()));
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(fileName)
-                .toUriString();
-
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
+        Image image = imageRepository.save(new Image(file.getOriginalFilename(), "/home/saeedhpro/upload/" + file.getOriginalFilename()));
+        log.error(image.getId());
+        return image;
     }
 
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.stream(files)
-                .map(this::uploadFile)
-                .collect(Collectors.toList());
-    }
+//    @PostMapping("/uploadMultipleFiles")
+//    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+//        return Arrays.stream(files)
+//                .map(this::uploadFile)
+//                .collect(Collectors.toList());
+//    }
 
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {

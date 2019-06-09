@@ -4,6 +4,7 @@ import com.company.paw.models.Audits.Product;
 import io.leangen.graphql.annotations.GraphQLNonNull;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -14,7 +15,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @GraphQLType
 public class Plate extends Product {
-    @GraphQLNonNull
-    private boolean isPrivate;
+    @DBRef
     private Plate mappedPlate;
+
+    private boolean isPrivate;
+    private Image minority;
 }

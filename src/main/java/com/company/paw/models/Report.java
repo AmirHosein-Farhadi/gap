@@ -16,25 +16,14 @@ import java.util.Date;
 @Builder
 @Document
 @GraphQLType
-public class Record extends AuditModel {
-    @GraphQLNonNull
+public class Report extends AuditModel {
     private Employee user;
-
-    @GraphQLNonNull
-    private Product product;
-
-    @GraphQLNonNull
     private Organization organization;
-
-    @GraphQLNonNull
-    private Date time;
-    private Date time;
-
-    Request
-
-    @GraphQLNonNull
-    private boolean status;
-    private boolean status;
-
+    private Product product;
+    private Date borrowTime;
+    private Date returnTime;
+    private Request request;
+    private boolean borrowStatus;
+    private boolean returnStatus;
     private String description;
 }

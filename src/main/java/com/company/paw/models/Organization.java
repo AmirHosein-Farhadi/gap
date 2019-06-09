@@ -11,35 +11,31 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"products", "employees"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"reports", "employees", "weapons", "plates"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Document
 @GraphQLType
 public class Organization extends AuditModel {
-    @GraphQLNonNull
     private String name;
-
-    @GraphQLNonNull
     private State state;
-
-    @GraphQLNonNull
     private City city;
-
-    @GraphQLNonNull
     private String address;
 
-    @GraphQLNonNull
-    private String phoneNumber;
-
-    //todo to be decided after test
-    private String username;
-    private String password;
+    @DBRef
+    private List<Report> reports;
 
     @DBRef
     private List<Employee> employees;
 
     @DBRef
-    private List<Product> products;
+    private List<Weapon> weapons;
+
+    @DBRef
+    private List<Plate> plates;
+
+    //todo to be decided after test
+//    private String username;
+//    private String password;
 }

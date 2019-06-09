@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"images"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"images", "reports", "weapons"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,15 +18,17 @@ import java.util.List;
 @GraphQLType
 public class Employee extends AuditModel {
     private String fullName;
-    private Date date;
-    private String nationalId;
-    private String employeeId;
+    private Date birthDate;
     private Position position;
+    private String nationalId;
     private Organization organization;
-
-    @DBRef
-    private List<Image> images;
-
     private String address;
     private String phoneNumber;
+    private Image image;
+
+    @DBRef
+    private List<Report> reports;
+
+    @DBRef
+    private List<Weapon> weapons;
 }

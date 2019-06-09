@@ -10,18 +10,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(exclude = {"weapons"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Document
 @GraphQLType
 public class WeaponType extends AuditModel {
-    @GraphQLNonNull
     private String name;
-
-    @GraphQLNonNull
-    private WeaponCategory category;
 
     @DBRef
     private List<Weapon> weapons;

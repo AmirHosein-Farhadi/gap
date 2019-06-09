@@ -1,4 +1,4 @@
-package com.company.paw.graphql.settings;
+package com.company.paw.graphql;
 
 import com.company.paw.graphql.services.*;
 import graphql.GraphQL;
@@ -29,10 +29,9 @@ public class SchemaGenerator {
     private final OrganizationService organizationService;
     private final PlateService plateService;
     private final PositionService positionService;
-    private final RecordsService recordsService;
+    private final ReportsService reportsService;
     private final RequestService requestService;
     private final StateService stateService;
-    private final WeaponCategoryService weaponCategoryService;
     private final WeaponTypeService weaponTypeService;
     private final WeaponService weaponService;
 
@@ -66,7 +65,7 @@ public class SchemaGenerator {
                         //Resolve by annotations
                         new AnnotatedResolverBuilder())
                 .withOperationsFromSingletons(cityService, employeeService, imageService, organizationService, plateService,
-                        positionService, recordsService, requestService, stateService, weaponCategoryService, weaponTypeService, weaponService)
+                        positionService, reportsService, requestService, stateService, weaponTypeService, weaponService)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
         return GraphQL.newGraphQL(schema).build();

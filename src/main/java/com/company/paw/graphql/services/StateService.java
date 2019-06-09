@@ -36,9 +36,14 @@ public class StateService {
 
     @GraphQLMutation
     public State addSubCity(String stateId, String cityId) {
-        Optional<State> stateOptional = stateRepository.findById(stateId);
-        Optional<City> cityOptional = cityRepository.findById(cityId);
-        stateOptional.ifPresent(state -> state.addSubCity(cityOptional.orElse(null)));
-        return stateRepository.save(stateOptional.get());
+        State state = stateRepository.findById(stateId).get();
+        City city = cityRepository.findById(cityId).get();
+        return stateRepository.save(addCityToState(state, city));
     }
+
+    private State addCityToState(State state, City city) {
+        state.getCities().add(city);
+        return state;
+    }
+
 }

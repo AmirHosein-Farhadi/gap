@@ -12,7 +12,6 @@ public class OrganizationInput {
     private String stateId;
     private String cityId;
     private String address;
-    private String phoneNumber;
-    private String username;
-    private String password;
+//    private String username;
+//    private String password;
 }

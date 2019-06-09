@@ -7,24 +7,25 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"images"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"reports", "currentUsers"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @GraphQLInterface(name = "Product")
 public abstract class Product extends AuditModel {
-    @GraphQLNonNull
     private String serial;
-
-    private Request request;
-
-    @GraphQLNonNull
+    private String productNumber;
+    private boolean status;
     private Organization organization;
 
-    private List<Record> records;
-    private List<Image> images;
-    private Employee currentUser;
+    @DBRef
+    private List<Report> reports;
+
+    @DBRef
+    private List<Employee> currentUsers;
+    private Image image;
 }
