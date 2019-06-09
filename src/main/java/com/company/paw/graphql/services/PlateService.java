@@ -3,6 +3,7 @@ package com.company.paw.graphql.services;
 import com.company.paw.Repositories.*;
 import com.company.paw.graphql.InputTypes.ProductInput;
 import com.company.paw.models.*;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class PlateService {
     private final PlateRepository plateRepository;
     private final OrganizationRepository organizationRepository;
     private final ImageRepository imageRepository;
+    private final EmployeeRepository employeeRepository;
     private final ReportsService reportsService;
     private final EmployeeService employeeService;
 
@@ -37,114 +39,63 @@ public class PlateService {
         return plateRepository.save(addInput(input));
     }
 
-//    @GraphQLMutation
-//    public Plate editPlate(String id, ProductInput input) {
-//        return plateRepository.save(editInput(id, input));
-//    }
+    @GraphQLMutation
+    public Plate editPlate(String plateId, ProductInput input) {
+        return plateRepository.save(editInput(plateId, input));
+    }
 
-//    @GraphQLMutation
-//    public Plate usePlate(ProductReturnInput input) {
-//        Plate plate = plateRepository.findById(input.getProductId()).get();
-//        Employee employee = employeeRepository.findById(input.getEmployeeId()).get();
-//
-//        Report report = new Report();
-//        report.setUser(employee);
-//        report.setOrganization(plate.getOrganization());
-//        report.setProduct(plate);
-//        report.setReturning(false);
-//        report.setStatus(input.isStatus());
-//        Date date = null;
-//        try {
-//            date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDate());
-//        } catch (Exception ignored) {
-//        }
-//        report.setTime(date);
-//        report.setDescription(input.getDescription());
-//        recordRepository.save(report);
-//
-//        plate.getReports().add(report);
-//        plate.setCurrentUser(employee);
-//        return plateRepository.save(plate);
-//    }
+    @GraphQLMutation
+    public Plate deletePlate(String plateId) {
+        Optional<Plate> plateOptional = plateRepository.findById(plateId);
+        plateOptional.ifPresent(plateRepository::delete);
+        return plateOptional.orElse(null);
+    }
 
-//    @GraphQLMutation
-//    public Plate returnPlate(ProductReturnInput input) {
-//        Plate plate = plateRepository.findById(input.getProductId()).get();
-//        Employee employee = employeeRepository.findById(input.getEmployeeId()).get();
-//
-//        Report report = new Report();
-//        report.setUser(employee);
-//        report.setOrganization(plate.getOrganization());
-//        report.setProduct(plate);
-//        report.setReturning(true);
-//        report.setStatus(input.isStatus());
-//        Date date = null;
-//        try {
-//            date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDate());
-//        } catch (Exception ignored) {
-//        }
-//        report.setTime(date);
-//        report.setDescription(input.getDescription());
-//        recordRepository.save(report);
-//
-//        plate.getReports().add(report);
-//        plate.setCurrentUser(null);
-//        return plateRepository.save(plate);
-//    }
+    @GraphQLMutation
+    public Plate attachMappedPlate(String plateId, String mappedPlateId) {
+        Plate plate = plateRepository.findById(plateId).get();
+        Plate mappedPlate = plateRepository.findById(mappedPlateId).get();
+        plate.setMappedPlate(mappedPlate);
+        mappedPlate.setMappedPlate(plate);
+        plateRepository.save(plate);
+        return plateRepository.save(mappedPlate);
+    }
+
+    @GraphQLMutation
+    public Employee setPlateUser(String plateId, String employeeId) {
+        Plate plate = plateRepository.findById(plateId).get();
+        Employee employee = employeeRepository.findById(employeeId).get();
+        plate.setCurrentUsers(Collections.singletonList(employee));
+        List<Plate> plates = employee.getPlates();
+        plates.add(plate);
+        employee.setPlates(plates);
+        plateRepository.save(plate);
+        return employeeRepository.save(employee);
+    }
 
     private Plate addInput(ProductInput input) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(input.getOrganizationId());
-        Optional<Image> imageOptional = imageRepository.findById(input.getImageId());
-        Optional<Plate> mappedPlateOptional;
-
         Plate plate = new Plate();
-        if (input.getMappedPlateId() != null) {
-            mappedPlateOptional = plateRepository.findById(input.getMappedPlateId());
-            plate.setMappedPlate(mappedPlateOptional.orElse(null));
-        } else {
-            plate.setMappedPlate(null);
-        }
-
-        if (input.getCurrentUsersId() != null && !input.getCurrentUsersId().isEmpty())
-            plate.setCurrentUsers(employeeService.employeesIdToEmployees(input.getCurrentUsersId()));
-        else
-            plate.setCurrentUsers(Collections.emptyList());
-
         plate.setSerial(input.getSerial());
-
-        plate.setImage(imageOptional.orElse(null));
-
-        plate.setOrganization(organizationOptional.orElse(null));
-        if (input.getReportsId() != null && !input.getReportsId().isEmpty()) {
-            plate.setReports(reportsService.recordsIdToRecords(input.getReportsId()));
-        } else {
-            plate.setReports(Collections.emptyList());
-        }
-
+        plate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        plate.setImage(imageRepository.findById(input.getImageId()).get());
+        plate.setMinority(imageRepository.findById(input.getMinorityId()).get());
+        plate.setPrivate(input.isPrivate());
+        plate.setCurrentUsers(Collections.emptyList());
+        plate.setReports(Collections.emptyList());
         return plate;
     }
 
-//    private Plate editInput(String id, ProductInput input) {
-//        Optional<Request> requestOptional = requestRepository.findById(input.getRequestId());
-//        Optional<Organization> organizationOptional = organizationRepository.findById(input.getOrganizationId());
-//        Optional<Employee> employeeOptional = employeeRepository.findById(input.getCurrentUserId());
-//        Optional<Plate> plateOptional = plateRepository.findById(input.getMappedPlateId());
-//
-//        Plate plate = plateRepository.findById(id).get();
-//        if (input.getSerial() != null)
-//            plate.setSerial(input.getSerial());
-//        if (input.getReportsId() != null)
-//            plate.setRequest(requestOptional.orElse(null));
-//        if (input.getOrganizationId() != null)
-//            plate.setOrganization(organizationOptional.orElse(null));
-//        if (input.getCurrentUserId() != null)
-//            plate.setCurrentUser(employeeOptional.orElse(null));
-//        if (input.getReportsId() != null)
-//            plate.setReports(recordsService.recordsIdToRecords(input.getReportsId()));
-//        if (input.getImagesId() != null)
-//            plate.setImages(imageService.imagesIdToImages(input.getImagesId()));
-//        if (input.getMappedPlateId() != null)
-//            plate.setMappedPlate(plateOptional.orElse(null));
-//        return plate;
-//    }
+    private Plate editInput(String plateId, ProductInput input) {
+        Plate plate = plateRepository.findById(plateId).get();
+        if (input.getSerial() != null)
+            plate.setSerial(input.getSerial());
+        if (input.getOrganizationId() != null)
+            plate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        if (input.getImageId() != null)
+            plate.setImage(imageRepository.findById(input.getImageId()).get());
+        if (input.getMinorityId() != null)
+            plate.setMinority(imageRepository.findById(input.getMinorityId()).get());
+        plate.setPrivate(input.isPrivate());
+        return plate;
+    }
 }

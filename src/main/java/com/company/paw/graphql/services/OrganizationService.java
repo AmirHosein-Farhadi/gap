@@ -14,6 +14,7 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +32,8 @@ public class OrganizationService {
     }
 
     @GraphQLQuery
-    public Organization getOrganization(@GraphQLArgument(name = "id") String id) {
-        return organizationRepository.findById(id).orElse(null);
+    public Organization getOrganization(String organizationId) {
+        return organizationRepository.findById(organizationId).orElse(null);
     }
 
     @GraphQLMutation
@@ -41,38 +42,40 @@ public class OrganizationService {
     }
 
     @GraphQLMutation
-    public Organization deleteOrganization(String id) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(id);
+    public Organization deleteOrganization(String organizationId) {
+        Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
         organizationOptional.ifPresent(organizationRepository::delete);
         return organizationOptional.orElse(null);
     }
 
-//    @GraphQLMutation
-//    public Organization editOrganization(String id, OrganizationInput input) {
-//        return organizationRepository.save(editInput(id, input));
-//    }
+    @GraphQLMutation
+    public Organization editOrganization(String organizationId, OrganizationInput input) {
+        return organizationRepository.save(editInput(organizationId, input));
+    }
 
     private Organization addInput(OrganizationInput input) {
-        City city = cityRepository.findById(input.getCityId()).orElse(null);
-        State state = stateRepository.findById(input.getStateId()).orElse(null);
         return Organization.builder()
                 .name(input.getName())
-                .city(city)
-                .state(state)
                 .address(input.getAddress())
+                .state(stateRepository.findById(input.getStateId()).get())
+                .city(cityRepository.findById(input.getCityId()).get())
+                .reports(Collections.emptyList())
+                .employees(Collections.emptyList())
+                .weapons(Collections.emptyList())
+                .plates(Collections.emptyList())
                 .build();
     }
 
-//    private Organization editInput(String id, OrganizationInput input) {
-//        Organization organization = organizationRepository.findById(id).get();
-//        if (input.getAddress() != null)
-//            organization.setAddress(input.getAddress());
-//        if (input.getCityId() != null)
-//            organization.setCity(cityRepository.findById(input.getCityId()).orElse(null));
-//        if (input.getName() != null)
-//            organization.setName(input.getName());
-//        if (input.getStateId() != null)
-//            organization.setState(stateRepository.findById(input.getStateId()).orElse(null));
-//        return organization;
-//    }
+    private Organization editInput(String organizationId, OrganizationInput input) {
+        Organization organization = organizationRepository.findById(organizationId).get();
+        if (input.getName() != null)
+            organization.setName(input.getName());
+        if (input.getAddress() != null)
+            organization.setAddress(input.getAddress());
+        if (input.getCityId() != null)
+            organization.setCity(cityRepository.findById(input.getCityId()).get());
+        if (input.getStateId() != null)
+            organization.setState(stateRepository.findById(input.getStateId()).get());
+        return organization;
+    }
 }

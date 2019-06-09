@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,5 +36,12 @@ public class WeaponTypeService {
         WeaponType weaponType = weaponTypeRepository.findById(id).get();
         weaponType.setName(name);
         return weaponTypeRepository.save(weaponType);
+    }
+
+    @GraphQLMutation
+    public WeaponType deleteWeaponType(String weaponTypeId) {
+        Optional<WeaponType> weaponTypeOptional = weaponTypeRepository.findById(weaponTypeId);
+        weaponTypeOptional.ifPresent(weaponTypeRepository::delete);
+        return weaponTypeOptional.orElse(null);
     }
 }

@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,62 +48,59 @@ public class EmployeeService {
         employeeRepository.save(employee);
 
         Organization organization = organizationRepository.findById(employeeInput.getOrganizationId()).get();
-        if (organization.getEmployees() != null)
-            organization.getEmployees().add(employee);
-        else {
-            organization.setEmployees(Collections.singletonList(employee));
-        }
+        organization.getEmployees().add(employee);
         organizationRepository.save(organization);
 
         return employee;
     }
 
     @GraphQLMutation
-    public Employee updateEmployee(String id, EmployeeInput employeeInput) {
-        return employeeRepository.save(updateInput(id, employeeInput));
+    public Employee updateEmployee(String employeeId, EmployeeInput employeeInput) {
+        return employeeRepository.save(updateInput(employeeId, employeeInput));
     }
 
     @GraphQLMutation
-    public Employee deleteEmployee(String id) {
-        Employee employee = employeeRepository.findById(id).get();
-        employeeRepository.delete(employeeRepository.findById(id).get());
-        return employee;
+    public Employee deleteEmployee(String employeeId) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+        employeeOptional.ifPresent(employeeRepository::delete);
+        return employeeOptional.orElse(null);
     }
 
     private Employee addInput(EmployeeInput input) {
-        Employee employee = new Employee();
-        employee.setFullName(input.getFullName());
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
         } catch (Exception ignored) {
         }
+        Employee employee = new Employee();
+        employee.setFullName(input.getFullName());
         employee.setBirthDate(date);
         employee.setNationalId(input.getNationalId());
         employee.setAddress(input.getAddress());
         employee.setPhoneNumber(input.getPhoneNumber());
-        employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
+        employee.setPosition(positionRepository.findById(input.getPositionId()).get());
         employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
+        employee.setReports(Collections.emptyList());
+        employee.setWeapons(Collections.emptyList());
+        employee.setPlates(Collections.emptyList());
         return employee;
     }
 
-    private Employee updateInput(String inputId, EmployeeInput input) {
-        Employee employee = employeeRepository.findById(inputId).orElse(new Employee());
-        if (!input.getFullName().isEmpty())
+    private Employee updateInput(String employeeId, EmployeeInput input) {
+        Employee employee = employeeRepository.findById(employeeId).get();
+        if (input.getFullName() != null)
             employee.setFullName(input.getFullName());
-        if (!input.getNationalId().isEmpty())
+        if (input.getNationalId() != null)
             employee.setNationalId(input.getNationalId());
-        if (!input.getAddress().isEmpty())
+        if (input.getAddress() != null)
             employee.setAddress(input.getAddress());
-        if (!input.getPhoneNumber().isEmpty())
+        if (input.getPhoneNumber() != null)
             employee.setPhoneNumber(input.getPhoneNumber());
-        if (!input.getPositionId().isEmpty())
+        if (input.getPositionId() != null)
             employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
-        if (!input.getOrganizationId().isEmpty())
-            employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
-        if (!input.getImageId().isEmpty())
+        if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
         return employee;
     }

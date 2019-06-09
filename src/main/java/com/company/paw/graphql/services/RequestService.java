@@ -39,24 +39,55 @@ public class RequestService {
         return requestRepository.save(addInput(input));
     }
 
-    private Request addInput(RequestInput input) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(input.getOrganizationId());
-        Optional<Employee> employeeOptional = employeeRepository.findById(input.getEmployeeId());
-        Optional<Image> imageOptional = imageRepository.findById(input.getImageId());
+    @GraphQLMutation
+    public Request editRequest(String requestId, RequestInput input) {
+        return requestRepository.save(editInput(requestId, input));
+    }
 
+    @GraphQLMutation
+    public Request deleteRequest(String requestId) {
+        Optional<Request> requestOptional = requestRepository.findById(requestId);
+        requestOptional.ifPresent(requestRepository::delete);
+        return requestOptional.orElse(null);
+    }
+
+    private Request addInput(RequestInput input) {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDateOnImage());
         } catch (Exception ignored) {
         }
-
         Request request = new Request();
         request.setDescription(input.getDescription());
         request.setTitle(input.getTitle());
         request.setDateOnImage(date);
-        request.setEmployee(employeeOptional.orElse(null));
-        request.setOrganization(organizationOptional.orElse(null));
-        request.setImage(imageOptional.orElse(null));
+        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
+        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        request.setImage(imageRepository.findById(input.getImageId()).get());
+        request.setReport(null);
+        return request;
+    }
+
+    private Request editInput(String requestId, RequestInput input) {
+        Request request = requestRepository.findById(requestId).get();
+        if (input.getDescription() != null) {
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDateOnImage());
+            } catch (Exception ignored) {
+            }
+            request.setDateOnImage(date);
+        }
+        if (input.getDescription() != null)
+            request.setDescription(input.getDescription());
+        if (input.getTitle() != null)
+            request.setTitle(input.getTitle());
+        if (input.getEmployeeId() != null)
+            request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
+        if (input.getOrganizationId() != null)
+            request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        if (input.getImageId() != null)
+            request.setImage(imageRepository.findById(input.getImageId()).get());
 
         return request;
     }

@@ -38,34 +38,10 @@ public class SchemaGenerator {
     @Bean
     public GraphQL getGraphQL() {
         GraphQLSchema schema = new GraphQLSchemaGenerator()
-                .withInterfaceMappingStrategy(new InterfaceMappingStrategy() {
-                    @Override
-                    public boolean supports(AnnotatedType interfase) {
-                        return interfase.isAnnotationPresent(GraphQLInterface.class);
-                    }
-
-                    @Override
-                    public Collection<AnnotatedType> getInterfaces(AnnotatedType type) {
-                        Class clazz = ClassUtils.getRawType(type.getType());
-                        Set<AnnotatedType> interfaces = new HashSet<>();
-                        do {
-                            AnnotatedType currentType = GenericTypeReflector.getExactSuperType(type, clazz);
-                            if (supports(currentType)) {
-                                interfaces.add(currentType);
-                            }
-                            Arrays.stream(clazz.getInterfaces())
-                                    .map(inter -> GenericTypeReflector.getExactSuperType(type, inter))
-                                    .filter(this::supports)
-                                    .forEach(interfaces::add);
-                        } while ((clazz = clazz.getSuperclass()) != Object.class && clazz != null);
-                        return interfaces;
-                    }
-                })
                 .withResolverBuilders(
-                        //Resolve by annotations
                         new AnnotatedResolverBuilder())
                 .withOperationsFromSingletons(cityService, employeeService, imageService, organizationService, plateService,
-                        positionService, reportsService, requestService, stateService, weaponTypeService, weaponService)
+                        positionService, reportsService, requestService, stateService, weaponService, weaponTypeService)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
         return GraphQL.newGraphQL(schema).build();

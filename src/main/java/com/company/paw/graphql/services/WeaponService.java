@@ -5,10 +5,7 @@ import com.company.paw.Repositories.OrganizationRepository;
 import com.company.paw.Repositories.WeaponRepository;
 import com.company.paw.Repositories.WeaponTypeRepository;
 import com.company.paw.graphql.InputTypes.ProductInput;
-import com.company.paw.models.Image;
-import com.company.paw.models.Organization;
 import com.company.paw.models.Weapon;
-import com.company.paw.models.WeaponType;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -43,33 +40,43 @@ public class WeaponService {
         return weaponRepository.save(addInput(input));
     }
 
-    private Weapon addInput(ProductInput input) {
-        Optional<Organization> organizationOptional = organizationRepository.findById(input.getOrganizationId());
-        Optional<Image> imageOptional = imageRepository.findById(input.getImageId());
-        Optional<WeaponType> weaponTypeOptional = weaponTypeRepository.findById(input.getWeaponTypeId());
+    @GraphQLMutation
+    public Weapon editWeapon(String weaponId, ProductInput input) {
+        return weaponRepository.save(editInput(weaponId, input));
+    }
 
-        Weapon weapon = new Weapon();
-        if (input.getCurrentUsersId() != null && !input.getCurrentUsersId().isEmpty())
-            weapon.setCurrentUsers(employeeService.employeesIdToEmployees(input.getCurrentUsersId()));
-        else
-            weapon.setCurrentUsers(Collections.emptyList());
+    @GraphQLMutation
+    public Weapon deleteWeapon(String weaponId) {
+        Optional<Weapon> weaponOptional = weaponRepository.findById(weaponId);
+        weaponOptional.ifPresent(weaponRepository::delete);
+        return weaponOptional.orElse(null);
+    }
 
-        if (weapon.getCurrentUsers().size() == 1)
+    private Weapon editInput(String weaponId, ProductInput input) {
+        Weapon weapon = weaponRepository.findById(weaponId).get();
+        if (input.getSerial() != null)
             weapon.setSerial(input.getSerial());
-        else
-            weapon.setSerial(null);
+        if (input.getOrganizationId() != null)
+            weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        if (input.getImageId() != null)
+            weapon.setImage(imageRepository.findById(input.getImageId()).orElse(null));
+        if (input.getWeaponName() != null)
+            weapon.setName(input.getWeaponName());
+        if (input.getWeaponTypeId() != null)
+            weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+        return weapon;
+    }
 
-        weapon.setOrganization(organizationOptional.orElse(null));
+    private Weapon addInput(ProductInput input) {
+        Weapon weapon = new Weapon();
 
-        if (input.getReportsId() != null && !input.getReportsId().isEmpty()) {
-            weapon.setReports(reportsService.recordsIdToRecords(input.getReportsId()));
-        } else {
-            weapon.setReports(Collections.emptyList());
-        }
-        weapon.setImage(imageOptional.orElse(null));
-        weapon.setName(input.getName());
-        weapon.setType(weaponTypeOptional.orElse(null));
-
+        weapon.setSerial(input.getSerial());
+        weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        weapon.setImage(imageRepository.findById(input.getImageId()).orElse(null));
+        weapon.setName(input.getWeaponName());
+        weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+        weapon.setReports(Collections.emptyList());
+        weapon.setCurrentUsers(Collections.emptyList());
         return weapon;
     }
 }

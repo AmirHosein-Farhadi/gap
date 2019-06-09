@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -38,8 +39,8 @@ public class PositionService {
 
     @GraphQLMutation
     public Position deletePosition(String id) {
-        Position position = positionRepository.findById(id).orElse(null);
-        positionRepository.delete(position);
-        return position;
+        Optional<Position> positionOptional = positionRepository.findById(id);
+        positionOptional.ifPresent(positionRepository::delete);
+        return positionOptional.orElse(null);
     }
 }

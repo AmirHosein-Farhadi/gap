@@ -31,4 +31,7 @@ public class Employee extends AuditModel {
 
     @DBRef
     private List<Weapon> weapons;
+
+    @DBRef
+    private List<Plate> plates;
 }

@@ -14,6 +14,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @GraphQLType
 public class Weapon extends Product {
-    private String name;
     private WeaponType type;
+    private String name;
+
+//    private boolean isSerializeAble;
+//    private int quantity;
 }

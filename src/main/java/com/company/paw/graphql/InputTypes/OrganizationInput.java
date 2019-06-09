@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrganizationInput {
     private String name;
+    private String address;
     private String stateId;
     private String cityId;
-    private String address;
 //    private String username;
 //    private String password;
 }
