@@ -2,6 +2,7 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.Repositories.ImageRepository;
 import com.company.paw.models.Image;
+import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,10 @@ public class ImageService {
         return imageRepository.findById(id).orElse(null);
     }
 
-//        @GraphQLMutation
-//    public Image addImage(String name) {
-//        return imageRepository.save(new Image(name));
-//    }
+    @GraphQLMutation
+    public Image addImage(String name) {
+        return imageRepository.save(new Image(name, "path"));
+    }
 
     public List<Image> imagesIdToImages(List<String> imagesId) {
         return imagesId.stream()

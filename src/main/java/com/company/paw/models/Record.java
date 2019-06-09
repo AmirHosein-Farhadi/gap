@@ -28,12 +28,13 @@ public class Record extends AuditModel {
 
     @GraphQLNonNull
     private Date time;
+    private Date time;
+
+    Request
 
     @GraphQLNonNull
     private boolean status;
-
-    @GraphQLNonNull
-    private boolean isReturning;
+    private boolean status;
 
     private String description;
 }

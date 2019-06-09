@@ -47,6 +47,11 @@ public class OrganizationService {
         return organizationOptional.orElse(null);
     }
 
+    @GraphQLMutation
+    public Organization editOrganization(String id, OrganizationInput input) {
+        return organizationRepository.save(editInput(id, input));
+    }
+
     private Organization addInput(OrganizationInput input) {
         City city = cityRepository.findById(input.getCityId()).orElse(null);
         State state = stateRepository.findById(input.getStateId()).orElse(null);
@@ -59,5 +64,20 @@ public class OrganizationService {
                 .username(input.getUsername())
                 .password(input.getPassword())
                 .build();
+    }
+
+    private Organization editInput(String id, OrganizationInput input) {
+        Organization organization = organizationRepository.findById(id).get();
+        if (input.getAddress() != null)
+            organization.setAddress(input.getAddress());
+        if (input.getCityId() != null)
+            organization.setCity(cityRepository.findById(input.getCityId()).orElse(null));
+        if (input.getName() != null)
+            organization.setName(input.getName());
+        if (input.getPhoneNumber() != null)
+            organization.setPhoneNumber(input.getPhoneNumber());
+        if (input.getStateId() != null)
+            organization.setState(stateRepository.findById(input.getStateId()).orElse(null));
+        return organization;
     }
 }

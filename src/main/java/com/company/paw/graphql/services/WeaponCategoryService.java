@@ -28,4 +28,12 @@ public class WeaponCategoryService {
     public WeaponCategory addWeaponCategory(String name) {
         return weaponCategoryRepository.save(new WeaponCategory(name));
     }
+
+    @GraphQLMutation
+    public WeaponCategory editWeaponCategory(String id, String name) {
+        WeaponCategory weaponCategory = weaponCategoryRepository.findById(id).get();
+        weaponCategory.setName(name);
+        return weaponCategoryRepository.save(weaponCategory);
+
+    }
 }

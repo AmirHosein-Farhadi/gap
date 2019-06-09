@@ -5,6 +5,7 @@ import com.company.paw.Repositories.OrganizationRepository;
 import com.company.paw.Repositories.PositionRepository;
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
+import com.company.paw.models.Image;
 import com.company.paw.models.Organization;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -34,16 +35,15 @@ public class EmployeeService {
     }
 
     @GraphQLMutation
-    @Transactional
     public Employee addEmployee(EmployeeInput employeeInput) {
         Employee employee = addInput(employeeInput);
-        Organization organization = employee.getOrganization();
+        employeeRepository.save(employee);
+        Organization organization = organizationRepository.findById(employeeInput.getOrganizationId()).get();
         if (organization.getEmployees() != null)
             organization.getEmployees().add(employee);
         else {
             organization.setEmployees(Collections.singletonList(employee));
         }
-        employeeRepository.save(employee);
         organizationRepository.save(organization);
         return employee;
     }
@@ -61,7 +61,6 @@ public class EmployeeService {
     }
 
     private Employee addInput(EmployeeInput input) {
-
         Employee employee = new Employee();
         employee.setFullName(input.getFullName());
         employee.setNationalId(input.getNationalId());
@@ -69,7 +68,7 @@ public class EmployeeService {
         employee.setAddress(input.getAddress());
         employee.setPhoneNumber(input.getPhoneNumber());
         employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
-        employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         if (input.getImages() != null)
             employee.setImages(imageService.imagesIdToImages(input.getImages()));
         return employee;
@@ -77,8 +76,6 @@ public class EmployeeService {
 
     private Employee updateInput(String inputId, EmployeeInput input) {
         Employee employee = employeeRepository.findById(inputId).orElse(new Employee());
-        //todo throw error if required fields are Null
-        //but also is handled in front end
         if (!input.getFullName().isEmpty())
             employee.setFullName(input.getFullName());
         if (!input.getNationalId().isEmpty())

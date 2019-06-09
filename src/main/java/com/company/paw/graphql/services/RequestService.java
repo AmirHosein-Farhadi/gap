@@ -24,7 +24,6 @@ public class RequestService {
     private final OrganizationRepository organizationRepository;
     private final ImageRepository imageRepository;
 
-
     @GraphQLQuery
     public List<Request> allRequests() {
         return requestRepository.findAll();

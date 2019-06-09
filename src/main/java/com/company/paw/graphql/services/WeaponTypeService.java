@@ -21,18 +21,28 @@ public class WeaponTypeService {
     private final WeaponCategoryRepository weaponCategoryRepository;
 
     @GraphQLQuery
-    public List<WeaponType> allWeaponInfos() {
+    public List<WeaponType> allWeaponTypes() {
         return weaponTypeRepository.findAll();
     }
 
     @GraphQLQuery
-    public WeaponType getWeaponInfo(String id) {
+    public WeaponType getWeaponTypes(String id) {
         return weaponTypeRepository.findById(id).orElse(null);
     }
 
     @GraphQLMutation
-    public WeaponType addWeaponInfo(WeaponTypeInput input) {
+    public WeaponType addWeaponTypes(WeaponTypeInput input) {
         Optional<WeaponCategory> weaponCategoryOptional = weaponCategoryRepository.findById(input.getWeaponCategoryId());
-        return weaponTypeRepository.save(new WeaponType(input.getType(), weaponCategoryOptional.orElse(null), Collections.emptyList()));
+        return weaponTypeRepository.save(new WeaponType(input.getName(), weaponCategoryOptional.orElse(null), Collections.emptyList()));
+    }
+
+    @GraphQLMutation
+    public WeaponType editWeaponType(String id, WeaponTypeInput input) {
+        WeaponType weaponType = weaponTypeRepository.findById(id).get();
+        if (input.getWeaponCategoryId() != null)
+            weaponType.setCategory(weaponCategoryRepository.findById(input.getWeaponCategoryId()).orElse(null));
+        if (input.getName() != null)
+            weaponType.setName(input.getName());
+        return weaponTypeRepository.save(weaponType);
     }
 }

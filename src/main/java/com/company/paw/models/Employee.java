@@ -6,29 +6,22 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"images"},callSuper = false)
+@EqualsAndHashCode(exclude = {"images"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Document
 @GraphQLType
 public class Employee extends AuditModel {
-    //    @GraphQLNonNull
     private String fullName;
-
-    //    @GraphQLNonNull
+    private Date date;
     private String nationalId;
-
-    //    @GraphQLNonNull
     private String employeeId;
-
-    //    @GraphQLNonNull
     private Position position;
-
-    //    @GraphQLNonNull
     private Organization organization;
 
     @DBRef

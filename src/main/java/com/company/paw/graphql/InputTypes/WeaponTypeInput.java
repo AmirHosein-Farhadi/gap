@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WeaponTypeInput {
-    private String type;
+    private String name;
     private String weaponCategoryId;
 }

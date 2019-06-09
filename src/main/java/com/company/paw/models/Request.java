@@ -18,6 +18,7 @@ import java.util.Date;
 public class Request extends AuditModel {
     @GraphQLNonNull
     private Organization organization;
+    private  Employee employee;
 
     @GraphQLNonNull
     private String title;

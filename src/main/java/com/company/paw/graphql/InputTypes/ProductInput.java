@@ -18,7 +18,6 @@ public class ProductInput {
     private List<String> imagesId;
 
     //plate specific
-    private boolean isPrivate;
     private String mappedPlateId;
 
     //weapon specific
