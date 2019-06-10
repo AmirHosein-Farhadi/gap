@@ -20,8 +20,6 @@ public class PlateService {
     private final OrganizationRepository organizationRepository;
     private final ImageRepository imageRepository;
     private final EmployeeRepository employeeRepository;
-    private final ReportsService reportsService;
-    private final EmployeeService employeeService;
 
 
     @GraphQLQuery

@@ -22,8 +22,6 @@ public class WeaponService {
     private final WeaponTypeRepository weaponTypeRepository;
     private final OrganizationRepository organizationRepository;
     private final ImageRepository imageRepository;
-    private final ReportsService reportsService;
-    private final EmployeeService employeeService;
 
     @GraphQLQuery
     public List<Weapon> allWeapons() {
