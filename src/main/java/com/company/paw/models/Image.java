@@ -3,6 +3,7 @@ package com.company.paw.models;
 import com.company.paw.models.Audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
