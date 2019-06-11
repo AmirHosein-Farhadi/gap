@@ -30,6 +30,24 @@ public class RequestService {
     }
 
     @GraphQLQuery
+    public List<Request> handeledRequests() {
+        List<Request> requests = requestRepository.findAll();
+        for (Request request : requests)
+            if (request.getReport() == null)
+                requests.remove(request);
+        return requests;
+    }
+
+    @GraphQLQuery
+    public List<Request> unhandeledRequests() {
+        List<Request> requests = requestRepository.findAll();
+        for (Request request : requests)
+            if (request.getReport() != null)
+                requests.remove(request);
+        return requests;
+    }
+
+    @GraphQLQuery
     public Request getRequest(String id) {
         return requestRepository.findById(id).orElse(null);
     }
@@ -64,7 +82,6 @@ public class RequestService {
         request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
         request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         request.setImage(imageRepository.findById(input.getImageId()).get());
-        request.setReport(null);
         return request;
     }
 

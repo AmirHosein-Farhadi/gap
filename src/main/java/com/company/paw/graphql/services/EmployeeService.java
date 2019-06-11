@@ -70,6 +70,7 @@ public class EmployeeService {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
+            log.error(date.toString());
         } catch (Exception ignored) {
         }
         Employee employee = new Employee();

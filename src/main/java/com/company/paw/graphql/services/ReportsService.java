@@ -67,12 +67,12 @@ public class ReportsService {
         Optional<Plate> plateOptional = plateRepository.findById(input.getProductId());
 
         Report report = new Report();
-        report.setUser(employeeRepository.findById(input.getUserId()).get());
+        report.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
         report.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         report.setRequest(requestRepository.findById(input.getRequestId()).orElse(null));
         report.setBorrowTime(date);
         report.setBorrowStatus(input.isBorrowStatus());
-        report.setDescription(input.getDescription());
+        report.setBorrowDescription(input.getBorrowDescription());
 
         if (weaponOptional.isPresent())
             report.setProduct(weaponOptional.get());
@@ -94,14 +94,14 @@ public class ReportsService {
         Optional<Weapon> weaponOptional = weaponRepository.findById(input.getProductId());
         Optional<Plate> plateOptional = plateRepository.findById(input.getProductId());
 
-        if (input.getUserId() != null)
-            report.setUser(employeeRepository.findById(input.getUserId()).get());
+        if (input.getEmployeeId() != null)
+            report.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
         if (input.getOrganizationId() != null)
             report.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         if (input.getRequestId() != null)
             report.setRequest(requestRepository.findById(input.getRequestId()).orElse(null));
-        if (input.getDescription() != null)
-            report.setDescription(input.getDescription());
+        if (input.getBorrowDescription() != null)
+            report.setBorrowDescription(input.getBorrowDescription());
         report.setBorrowStatus(input.isBorrowStatus());
 
         if (weaponOptional.isPresent())

@@ -18,6 +18,7 @@ import java.util.List;
 @GraphQLType
 public class WeaponType extends AuditModel {
     private String name;
+    private long quantity;
 
     @DBRef
     private List<Weapon> weapons;

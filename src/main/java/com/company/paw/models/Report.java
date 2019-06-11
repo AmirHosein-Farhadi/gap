@@ -17,7 +17,7 @@ import java.util.Date;
 @Document
 @GraphQLType
 public class Report extends AuditModel {
-    private Employee user;
+    private Employee employee;
     private Organization organization;
     private Product product;
     private Date borrowTime;
@@ -25,5 +25,10 @@ public class Report extends AuditModel {
     private Request request;
     private boolean borrowStatus;
     private boolean returnStatus;
-    private String description;
+    private String borrowDescription;
+    private String returnDescription;
+    private Image acceptImage;
+    private Image reciteImage;
+    private Image informationLetter;
+    private Image armyLetter;
 }

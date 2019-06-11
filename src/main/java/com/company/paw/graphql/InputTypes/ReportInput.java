@@ -8,11 +8,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportInput {
-    private String userId;
+    private String employeeId;
     private String organizationId;
     private String productId;
     private String requestId;
     private String borrowTime;
     private boolean borrowStatus;
-    private String description;
+    private String borrowDescription;
+    private String informationLetterId;
+    private String armyLetterId;
+    private String acceptImageId;
+    private String reciteImageId;
 }

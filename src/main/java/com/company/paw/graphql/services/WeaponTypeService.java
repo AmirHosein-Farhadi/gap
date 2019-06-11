@@ -28,7 +28,7 @@ public class WeaponTypeService {
 
     @GraphQLMutation
     public WeaponType addWeaponTypes(String name) {
-        return weaponTypeRepository.save(new WeaponType(name, Collections.emptyList()));
+        return weaponTypeRepository.save(new WeaponType(name, 0, Collections.emptyList()));
     }
 
     @GraphQLMutation

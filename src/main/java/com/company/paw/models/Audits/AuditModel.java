@@ -15,17 +15,16 @@ import java.util.Date;
 @GraphQLInterface(name = "AuditModel")
 public abstract class AuditModel {
     @Id
-//    @GraphQLNonNull
     @GraphQLId
     private String id;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date created;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updated;
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @CreatedDate
+//    private Date created;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @LastModifiedDate
+//    private Date updated;
 
     private boolean verified = true;
 }
