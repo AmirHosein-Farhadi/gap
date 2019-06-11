@@ -1,6 +1,7 @@
 package com.company.paw.graphql.services;
 
 import com.company.paw.Repositories.*;
+import com.company.paw.graphql.InputTypes.PlateInput;
 import com.company.paw.graphql.InputTypes.ProductInput;
 import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.*;
@@ -37,8 +38,26 @@ public class PlateService {
     }
 
     @GraphQLMutation
-    public Plate addPlate(ProductInput input) {
-        return plateRepository.save(addInput(input));
+    public Plate addPlate(PlateInput input) {
+
+        Plate privatePlate = new Plate();
+        privatePlate.setSerial(input.getPrivatePlateSerial());
+        privatePlate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        privatePlate.setMinority(imageRepository.findById(input.getMinorityImage()).orElse(null));
+        privatePlate.setPlateStatus(input.getPrivatePlateStatus());
+        privatePlate.setReports(Collections.emptyList());
+        plateRepository.save(privatePlate);
+
+        Plate backupPlate = new Plate();
+        backupPlate.setSerial(input.getBackupPlateSerial());
+        backupPlate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        backupPlate.setPlateStatus(input.getBackupPlateStatus());
+        backupPlate.setReports(Collections.emptyList());
+        backupPlate.setMappedPlate(privatePlate);
+        plateRepository.save(backupPlate);
+
+        privatePlate.setMappedPlate(backupPlate);
+        return plateRepository.save(privatePlate);
     }
 
     @GraphQLMutation
@@ -107,15 +126,14 @@ public class PlateService {
     }
 
 
-//    @GraphQLMutation
-//    public Plate attachMappedPlate(String plateId, String mappedPlateId) {
-//        Plate plate = plateRepository.findById(plateId).get();
-//        Plate mappedPlate = plateRepository.findById(mappedPlateId).get();
-//        plate.setMappedPlate(mappedPlate);
-//        mappedPlate.setMappedPlate(plate);
-//        plateRepository.save(plate);
-//        return plateRepository.save(mappedPlate);
-//    }
+    @GraphQLMutation
+    public Plate changeMappedPlate(String plateSerial, String plateId) {
+        Plate plate = plateRepository.findById(plateId).get();
+
+        Plate mappedPlate = plate.getMappedPlate();
+        mappedPlate.setSerial(plateSerial);
+        return plateRepository.save(mappedPlate);
+    }
 
     @GraphQLMutation
     public Employee setPlateUser(String plateId, String employeeId) {
@@ -129,17 +147,6 @@ public class PlateService {
         plates.add(plate);
         employee.setPlates(plates);
         return employeeRepository.save(employee);
-    }
-
-    private Plate addInput(ProductInput input) {
-        Plate plate = new Plate();
-        plate.setSerial(input.getSerial());
-        plate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        plate.setImage(imageRepository.findById(input.getImageId()).get());
-        plate.setMinority(imageRepository.findById(input.getMinorityId()).get());
-        plate.setPrivate(input.isPrivate());
-        plate.setReports(Collections.emptyList());
-        return plate;
     }
 
     private Plate editInput(String plateId, ProductInput input) {

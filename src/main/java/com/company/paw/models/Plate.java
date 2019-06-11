@@ -18,6 +18,7 @@ public class Plate extends Product {
     @DBRef
     private Plate mappedPlate;
 
+    private int plateStatus;
     private boolean isPrivate;
     private Image minority;
 }

@@ -10,6 +10,8 @@ import com.company.paw.models.WeaponType;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +33,38 @@ public class WeaponService {
 
     @GraphQLQuery
     public List<Weapon> allWeapons() {
-        return weaponRepository.findAll();
+        List<Weapon> weapons = weaponRepository.findAll();
+        for (Weapon weapon : weapons)
+            if (weapon.getType().getName().equals("افشانه") || weapon.getType().getName().equals("شوکر") || weapon.getType().getName().equals("بیسیم"))
+                weapons.remove(weapon);
+        return weapons;
+    }
+
+    @GraphQLQuery
+    public List<Weapon> allShockers() {
+        List<Weapon> weapons = weaponRepository.findAll();
+        for (Weapon weapon : weapons)
+            if (!weapon.getType().getName().equals("شوکر"))
+                weapons.remove(weapon);
+        return weapons;
+    }
+
+    @GraphQLQuery
+    public List<Weapon> allSprays() {
+        List<Weapon> weapons = weaponRepository.findAll();
+        for (Weapon weapon : weapons)
+            if (!weapon.getType().getName().equals("افشانه"))
+                weapons.remove(weapon);
+        return weapons;
+    }
+
+    @GraphQLQuery
+    public List<Weapon> allBisims() {
+        List<Weapon> weapons = weaponRepository.findAll();
+        for (Weapon weapon : weapons)
+            if (!weapon.getType().getName().equals("بیسیم"))
+                weapons.remove(weapon);
+        return weapons;
     }
 
     @GraphQLQuery
