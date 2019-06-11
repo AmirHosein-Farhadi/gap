@@ -161,6 +161,11 @@ public class WeaponService {
     }
 
     private Weapon editInput(String weaponId, ProductInput input) {
+        Date weaponExpirationDate = null;
+        try {
+            weaponExpirationDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getWeaponCardExpirationDate());
+        } catch (Exception ignored) {
+        }
         Weapon weapon = weaponRepository.findById(weaponId).get();
         if (input.getSerial() != null)
             weapon.setSerial(input.getSerial());
@@ -170,16 +175,31 @@ public class WeaponService {
             weapon.setName(input.getWeaponName());
         if (input.getWeaponTypeId() != null)
             weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+        if (weaponExpirationDate != null)
+            weapon.setWeaponCardExpirationDate(weaponExpirationDate);
+        if (input.getWeaponCardNumber() != null)
+            weapon.setWeaponCardNumber(input.getWeaponCardNumber());
+        if (input.getWeaponCardImageId() != null)
+            weapon.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
         return weapon;
     }
 
     private Weapon addInput(ProductInput input) {
+        Date weaponExpirationDate = null;
+        try {
+            weaponExpirationDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getWeaponCardExpirationDate());
+        } catch (Exception ignored) {
+        }
         Weapon weapon = new Weapon();
 
         weapon.setSerial(input.getSerial());
+        weapon.setWeaponCardExpirationDate(weaponExpirationDate);
+        weapon.setWeaponCardNumber(input.getWeaponCardNumber());
         weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         weapon.setName(input.getWeaponName());
         weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+        if (input.getWeaponCardImageId() != null)
+            weapon.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
         weapon.setReports(Collections.emptyList());
         weapon.setCurrentUser(null);
         return weapon;

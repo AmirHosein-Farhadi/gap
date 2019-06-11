@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"reports", "currentUsers"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"reports"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @GraphQLInterface(name = "Product")
@@ -22,6 +22,7 @@ public abstract class Product extends AuditModel {
     private boolean status;
     private Organization organization;
     private Employee currentUser;
+    private WeaponType type;
 
     @DBRef
     private List<Report> reports;

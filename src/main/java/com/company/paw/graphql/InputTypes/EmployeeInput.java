@@ -19,6 +19,9 @@ public class EmployeeInput {
     private String positionId;
     private String organizationId;
     private String imageId;
+    private String employeeCardImageId;
+    private String employeeCardNumber;
+    private String employeeCardExpirationDate;
     private String sprayId;
     private String shockerId;
     private String bisimId;

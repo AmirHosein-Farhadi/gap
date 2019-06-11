@@ -16,7 +16,9 @@ public class ProductInput {
 
     private String weaponTypeId;            //weapon specific
     private String weaponName;
-
+    private String weaponCardImageId;
+    private String weaponCardNumber;
+    private String weaponCardExpirationDate;
 //    private boolean isSerializeAble;
 //    private int amount;
 }

@@ -65,14 +65,18 @@ public class EmployeeService {
     }
 
     private Employee addInput(EmployeeInput input) {
-        Date date = null;
+        Date birthDate = null;
+        Date employeeExpirationDate = null;
         try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
+            birthDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
+            employeeExpirationDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getEmployeeCardExpirationDate());
         } catch (Exception ignored) {
         }
         Employee employee = new Employee();
         employee.setFullName(input.getFullName());
-        employee.setBirthDate(date);
+        employee.setBirthDate(birthDate);
+        employee.setEmployeeCardExpirationDate(employeeExpirationDate);
+        employee.setEmployeeCardNumber(input.getEmployeeCardNumber());
         employee.setNationalId(input.getNationalId());
         employee.setAddress(input.getAddress());
         employee.setPhoneNumber(input.getPhoneNumber());
@@ -83,6 +87,8 @@ public class EmployeeService {
         employee.setShocker(weaponRepository.findById(input.getShockerId()).orElse(null));
         if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
+        if (input.getEmployeeCardImageId() != null)
+            employee.setEmployeeCardImage(imageRepository.findById(input.getEmployeeCardImageId()).get());
 
         employee.setReports(Collections.emptyList());
         employee.setWeapons(Collections.emptyList());
@@ -91,7 +97,20 @@ public class EmployeeService {
     }
 
     private Employee updateInput(String employeeId, EmployeeInput input) {
+        Date birthDate = null;
+        Date employeeExpirationDate = null;
+        try {
+            birthDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
+            employeeExpirationDate = new SimpleDateFormat("yyyy/MM/dd").parse(input.getEmployeeCardExpirationDate());
+        } catch (Exception ignored) {
+        }
         Employee employee = employeeRepository.findById(employeeId).get();
+        if (birthDate != null)
+            employee.setBirthDate(birthDate);
+        if (employeeExpirationDate != null)
+            employee.setEmployeeCardExpirationDate(employeeExpirationDate);
+        if (input.getEmployeeCardNumber() != null)
+            employee.setEmployeeCardNumber(input.getEmployeeCardNumber());
         if (input.getFullName() != null)
             employee.setFullName(input.getFullName());
         if (input.getNationalId() != null)
@@ -104,12 +123,14 @@ public class EmployeeService {
             employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
         if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
+        if (input.getEmployeeCardImageId() != null)
+            employee.setEmployeeCardImage(imageRepository.findById(input.getEmployeeCardImageId()).get());
         if (input.getBisimId() != null)
-        employee.setBisim(weaponRepository.findById(input.getBisimId()).orElse(null));
+            employee.setBisim(weaponRepository.findById(input.getBisimId()).orElse(null));
         if (input.getSprayId() != null)
-        employee.setSpray(weaponRepository.findById(input.getSprayId()).orElse(null));
+            employee.setSpray(weaponRepository.findById(input.getSprayId()).orElse(null));
         if (input.getShockerId() != null)
-        employee.setShocker(weaponRepository.findById(input.getShockerId()).orElse(null));
+            employee.setShocker(weaponRepository.findById(input.getShockerId()).orElse(null));
         return employee;
     }
 

@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"images", "reports", "weapons"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"plates", "reports", "weapons"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,6 +28,9 @@ public class Employee extends AuditModel {
     private Weapon spray;
     private Weapon shocker;
     private Weapon bisim;
+    private Date employeeCardExpirationDate;
+    private Image employeeCardImage;
+    private String employeeCardNumber;
 
     @DBRef
     private List<Report> reports;

@@ -6,6 +6,8 @@ import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
@@ -14,9 +16,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @GraphQLType
 public class Weapon extends Product {
-    private WeaponType type;
     private String name;
-
+    private Date weaponCardExpirationDate;
+    private Image weaponCardImage;
+    private String weaponCardNumber;
 //    private boolean isSerializeAble;
 //    private int quantity;
 }
