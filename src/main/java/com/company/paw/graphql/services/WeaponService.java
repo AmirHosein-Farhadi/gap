@@ -166,8 +166,6 @@ public class WeaponService {
             weapon.setSerial(input.getSerial());
         if (input.getOrganizationId() != null)
             weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        if (input.getImageId() != null)
-            weapon.setImage(imageRepository.findById(input.getImageId()).orElse(null));
         if (input.getWeaponName() != null)
             weapon.setName(input.getWeaponName());
         if (input.getWeaponTypeId() != null)
@@ -180,7 +178,6 @@ public class WeaponService {
 
         weapon.setSerial(input.getSerial());
         weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        weapon.setImage(imageRepository.findById(input.getImageId()).orElse(null));
         weapon.setName(input.getWeaponName());
         weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
         weapon.setReports(Collections.emptyList());

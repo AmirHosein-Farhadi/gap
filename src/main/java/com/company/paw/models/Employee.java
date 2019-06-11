@@ -25,6 +25,9 @@ public class Employee extends AuditModel {
     private String address;
     private String phoneNumber;
     private Image image;
+    private Weapon spray;
+    private Weapon shocker;
+    private Weapon bisim;
 
     @DBRef
     private List<Report> reports;

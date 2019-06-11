@@ -155,8 +155,6 @@ public class PlateService {
             plate.setSerial(input.getSerial());
         if (input.getOrganizationId() != null)
             plate.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        if (input.getImageId() != null)
-            plate.setImage(imageRepository.findById(input.getImageId()).get());
         if (input.getMinorityId() != null)
             plate.setMinority(imageRepository.findById(input.getMinorityId()).get());
         plate.setPrivate(input.isPrivate());

@@ -22,7 +22,6 @@ public abstract class Product extends AuditModel {
     private boolean status;
     private Organization organization;
     private Employee currentUser;
-    private Image image;
 
     @DBRef
     private List<Report> reports;

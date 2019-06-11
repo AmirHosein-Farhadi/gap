@@ -1,9 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.EmployeeRepository;
-import com.company.paw.Repositories.ImageRepository;
-import com.company.paw.Repositories.OrganizationRepository;
-import com.company.paw.Repositories.PositionRepository;
+import com.company.paw.Repositories.*;
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
 import com.company.paw.models.Image;
@@ -30,6 +27,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PositionRepository positionRepository;
     private final OrganizationRepository organizationRepository;
+    private final WeaponRepository weaponRepository;
     private final ImageRepository imageRepository;
 
     @GraphQLQuery
@@ -70,7 +68,6 @@ public class EmployeeService {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getBirthDate());
-            log.error(date.toString());
         } catch (Exception ignored) {
         }
         Employee employee = new Employee();
@@ -81,8 +78,12 @@ public class EmployeeService {
         employee.setPhoneNumber(input.getPhoneNumber());
         employee.setPosition(positionRepository.findById(input.getPositionId()).get());
         employee.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
+        employee.setBisim(weaponRepository.findById(input.getBisimId()).orElse(null));
+        employee.setSpray(weaponRepository.findById(input.getSprayId()).orElse(null));
+        employee.setShocker(weaponRepository.findById(input.getShockerId()).orElse(null));
         if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
+
         employee.setReports(Collections.emptyList());
         employee.setWeapons(Collections.emptyList());
         employee.setPlates(Collections.emptyList());
@@ -103,6 +104,12 @@ public class EmployeeService {
             employee.setPosition(positionRepository.findById(input.getPositionId()).orElse(null));
         if (input.getImageId() != null)
             employee.setImage(imageRepository.findById(input.getImageId()).get());
+        if (input.getBisimId() != null)
+        employee.setBisim(weaponRepository.findById(input.getBisimId()).orElse(null));
+        if (input.getSprayId() != null)
+        employee.setSpray(weaponRepository.findById(input.getSprayId()).orElse(null));
+        if (input.getShockerId() != null)
+        employee.setShocker(weaponRepository.findById(input.getShockerId()).orElse(null));
         return employee;
     }
 
