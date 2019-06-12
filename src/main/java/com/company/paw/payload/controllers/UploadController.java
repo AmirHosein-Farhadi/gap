@@ -29,7 +29,7 @@ public class UploadController {
         final String FILE_NAME = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "-" + StringUtils.cleanPath(file.getOriginalFilename());
 //        final String SERVER_PATH = "/home/saeedhpro/mac/paw/public";
 
-        Image image = imageRepository.save(new Image(FILE_NAME, "/"+ file.getOriginalFilename()));
+        Image image = imageRepository.save(new Image(FILE_NAME, file.getOriginalFilename()));
 
         fileStorageService.storeFile(file, FILE_NAME);
         return image;

@@ -7,7 +7,6 @@ import com.company.paw.graphql.InputTypes.OrganizationInput;
 import com.company.paw.models.City;
 import com.company.paw.models.Organization;
 import com.company.paw.models.State;
-import io.leangen.graphql.annotations.GraphQLArgument;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -54,11 +53,17 @@ public class OrganizationService {
     }
 
     private Organization addInput(OrganizationInput input) {
+        State state = new State();
+        state.setName("تهران");
+        City city = new City();
+        city.setName("تهران");
+        city.setState(state);
+        state.setCities(Collections.singletonList(city));
         return Organization.builder()
                 .name(input.getName())
                 .address(input.getAddress())
-                .state(stateRepository.findById(input.getStateId()).get())
-                .city(cityRepository.findById(input.getCityId()).get())
+                .state(state)
+                .city(city)
                 .reports(Collections.emptyList())
                 .employees(Collections.emptyList())
                 .weapons(Collections.emptyList())

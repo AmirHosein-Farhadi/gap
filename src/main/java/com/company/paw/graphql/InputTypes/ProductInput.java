@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ProductInput {
     private String serial;
     private String organizationId;
-
+    private String esm;
     private String minorityId;
     private boolean isPrivate;
 

@@ -2,7 +2,10 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.Repositories.*;
 import com.company.paw.graphql.InputTypes.ReportInput;
-import com.company.paw.models.*;
+import com.company.paw.models.Plate;
+import com.company.paw.models.Report;
+import com.company.paw.models.Request;
+import com.company.paw.models.Weapon;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -39,9 +42,12 @@ public class ReportsService {
         Report report = addInput(input);
         reportRepository.save(report);
 
-        Request request = requestRepository.findById(report.getRequest().getId()).get();
+        Request request = requestRepository.findById(input.getRequestId()).get();
         request.setReport(report);
         requestRepository.save(request);
+
+        report.setRequest(request);
+        reportRepository.save(report);
         return report;
     }
 

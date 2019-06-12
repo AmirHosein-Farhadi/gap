@@ -1,10 +1,10 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.*;
+import com.company.paw.Repositories.EmployeeRepository;
+import com.company.paw.Repositories.ImageRepository;
+import com.company.paw.Repositories.OrganizationRepository;
+import com.company.paw.Repositories.RequestRepository;
 import com.company.paw.graphql.InputTypes.RequestInput;
-import com.company.paw.models.Employee;
-import com.company.paw.models.Image;
-import com.company.paw.models.Organization;
 import com.company.paw.models.Request;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;

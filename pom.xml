@@ -12,10 +12,13 @@
     <artifactId>paw</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>paw</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <jodatime.version>2.5</jodatime.version>
+        <junit.version>4.11</junit.version>
     </properties>
 
     <dependencies>
@@ -37,7 +40,17 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.10.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${jodatime.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

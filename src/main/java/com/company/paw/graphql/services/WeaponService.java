@@ -10,8 +10,6 @@ import com.company.paw.models.WeaponType;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -118,8 +116,12 @@ public class WeaponService {
 
         weapon.setCurrentUser(employee);
         List<Report> reports = weapon.getReports();
+        List<Weapon> weapons = employee.getWeapons();
+        weapons.add(weapon);
+        employee.setWeapons(weapons);
         reports.add(report);
         weapon.setReports(reports);
+        employeeRepository.save(employee);
         return weaponRepository.save(weapon);
     }
 
@@ -142,6 +144,11 @@ public class WeaponService {
         report.setReturnTime(date);
         reportRepository.save(report);
 
+        Employee employee = employeeRepository.findById(weapon.getCurrentUser().getId()).orElse(null);
+        List<Weapon> weapons = employee.getWeapons();
+        weapons.remove(weapon);
+        employee.setWeapons(weapons);
+        employeeRepository.save(employee);
         return weapon;
     }
 
@@ -197,7 +204,11 @@ public class WeaponService {
         weapon.setWeaponCardNumber(input.getWeaponCardNumber());
         weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         weapon.setName(input.getWeaponName());
-        weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+        if (input.getWeaponTypeId().length() < 7)
+            weapon.setType(weaponTypeRepository.findByName(input.getWeaponTypeId()).get());
+        else
+            weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).get());
+
         if (input.getWeaponCardImageId() != null)
             weapon.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
         weapon.setReports(Collections.emptyList());

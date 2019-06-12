@@ -3,22 +3,12 @@ package com.company.paw.graphql;
 import com.company.paw.graphql.services.*;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
-import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.graphql.GraphQLSchemaGenerator;
-import io.leangen.graphql.annotations.types.GraphQLInterface;
-import io.leangen.graphql.generator.mapping.strategy.InterfaceMappingStrategy;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 import io.leangen.graphql.metadata.strategy.value.jackson.JacksonValueMapperFactory;
-import io.leangen.graphql.util.ClassUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.AnnotatedType;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service

@@ -3,15 +3,12 @@ package com.company.paw.graphql.services;
 import com.company.paw.Repositories.*;
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
-import com.company.paw.models.Image;
 import com.company.paw.models.Organization;
-import com.company.paw.models.Report;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
