@@ -1,7 +1,12 @@
 package com.company.paw.bootstrap;
 
 import com.company.paw.Repositories.*;
-import com.company.paw.models.*;
+import com.company.paw.models.City;
+import com.company.paw.models.Organization;
+import com.company.paw.models.Position;
+import com.company.paw.models.State;
+import com.company.paw.models.goods.WeaponName;
+import com.company.paw.models.goods.WeaponType;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;

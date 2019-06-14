@@ -1,4 +1,4 @@
-package com.company.paw.models;
+package com.company.paw.models.goods;
 
 import com.company.paw.models.audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;
@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document
 @GraphQLType
-public class City extends AuditModel {
+public class WeaponName extends AuditModel {
     private String name;
-    private State state;
 }

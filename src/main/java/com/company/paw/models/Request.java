@@ -1,6 +1,6 @@
 package com.company.paw.models;
 
-import com.company.paw.models.Audits.AuditModel;
+import com.company.paw.models.audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,5 +21,5 @@ public class Request extends AuditModel {
     private Image image;
     private Date dateOnImage;
     private String description;
-    private Report report;      //unhandled Request ,if Report is null
+    private Report report;
 }

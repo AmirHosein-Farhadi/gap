@@ -1,4 +1,4 @@
-package com.company.paw.models.Audits;
+package com.company.paw.models.audits;
 
 import io.leangen.graphql.annotations.GraphQLId;
 import io.leangen.graphql.annotations.types.GraphQLInterface;
