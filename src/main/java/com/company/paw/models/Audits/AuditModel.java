@@ -12,14 +12,5 @@ public abstract class AuditModel {
     @Id
     @GraphQLId
     private String id;
-
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @CreatedDate
-//    private Date created;
-//
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @LastModifiedDate
-//    private Date updated;
-
     private boolean verified = true;
 }

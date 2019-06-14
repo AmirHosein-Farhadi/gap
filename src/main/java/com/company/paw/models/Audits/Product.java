@@ -20,7 +20,6 @@ import java.util.List;
 @GraphQLInterface(name = "Product")
 public abstract class Product extends AuditModel {
     private String serial;
-    private String productNumber;
     private boolean status;
     private Organization organization;
     private Employee currentUser;

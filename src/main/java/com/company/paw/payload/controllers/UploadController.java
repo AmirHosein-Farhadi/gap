@@ -27,11 +27,10 @@ public class UploadController {
     @PostMapping("/uploadFile")
     public Image uploadFile(@RequestParam("file") MultipartFile file) {
         final String FILE_NAME = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "-" + StringUtils.cleanPath(file.getOriginalFilename());
-//        final String SERVER_PATH = "/home/saeedhpro/mac/paw/public";
-
-        Image image = imageRepository.save(new Image(FILE_NAME, file.getOriginalFilename()));
+        final String SERVER_PATH = "/home/saeedhpro/mac/paw/public";
 
         fileStorageService.storeFile(file, FILE_NAME);
-        return image;
+
+        return imageRepository.save(new Image(FILE_NAME, SERVER_PATH));
     }
 }

@@ -20,4 +20,10 @@ public class State extends AuditModel {
 
     @DBRef
     private List<City> cities;
+
+    public void addSubCity(City city) {
+        List<City> cities = this.cities;
+        cities.add(city);
+        this.cities = cities;
+    }
 }
