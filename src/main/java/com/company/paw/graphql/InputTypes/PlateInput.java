@@ -4,14 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlateInput {
-    private String privatePlateSerial;
-    private int privatePlateStatus;
-    private String minorityImage;
-    private String backupPlateSerial;
-    private int backupPlateStatus;
+    private String serial;
     private String organizationId;
+    private String currentUserId;
+    private List<String> minorityImagesId;
+    private int plateStatus;
+    private boolean isPrivate;
+    private boolean status;
 }

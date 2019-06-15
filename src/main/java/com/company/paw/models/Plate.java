@@ -1,11 +1,12 @@
-package com.company.paw.models.goods;
+package com.company.paw.models;
 
-import com.company.paw.models.Image;
 import com.company.paw.models.audits.Product;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -20,5 +21,5 @@ public class Plate extends Product {
 
     private int plateStatus;
     private boolean isPrivate;
-    private Image minority;
+    private List<Image> minority;
 }

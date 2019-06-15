@@ -19,9 +19,9 @@ import java.util.List;
 @GraphQLInterface(name = "Product")
 public abstract class Product extends AuditModel {
     private String serial;
-    private boolean status;
     private Organization organization;
     private Employee currentUser;
+    private boolean status;
 
     @DBRef
     private List<Report> reports;

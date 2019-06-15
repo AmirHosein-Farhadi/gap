@@ -78,7 +78,7 @@ public class RequestService {
         Request request = new Request();
         request.setDescription(input.getDescription());
         request.setTitle(input.getTitle());
-        request.setDateOnImage(date);
+        request.setDate(date);
         request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
         request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
         request.setImage(imageRepository.findById(input.getImageId()).get());
@@ -93,7 +93,7 @@ public class RequestService {
                 date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDateOnImage());
             } catch (Exception ignored) {
             }
-            request.setDateOnImage(date);
+            request.setDate(date);
         }
         if (input.getDescription() != null)
             request.setDescription(input.getDescription());

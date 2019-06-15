@@ -1,9 +1,7 @@
 package com.company.paw.models;
 
 import com.company.paw.models.audits.AuditModel;
-import com.company.paw.models.goods.Equipment;
-import com.company.paw.models.goods.Plate;
-import com.company.paw.models.goods.Weapon;
+import com.company.paw.models.audits.Product;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -22,16 +20,16 @@ import java.util.List;
 public class Employee extends AuditModel {
     private String fullName;
     private Date birthDate;
-    private Position position;
-    private String nationalId;
-    private Organization organization;
     private String address;
     private String phoneNumber;
-    private Image image;
-
-    private Date employeeCardExpirationDate;
-    private Image employeeCardImage;
+    private String nationalId;
     private String employeeCardNumber;
+    private Date employeeCardExpirationDate;
+
+    private Image employeeCardImage;
+    private Position position;
+    private Organization organization;
+    private Image image;
 
     private Equipment spray;
     private Equipment shocker;

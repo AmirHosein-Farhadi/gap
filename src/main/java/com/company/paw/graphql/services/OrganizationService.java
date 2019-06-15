@@ -1,12 +1,8 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.repositories.CityRepository;
-import com.company.paw.repositories.OrganizationRepository;
-import com.company.paw.repositories.StateRepository;
 import com.company.paw.graphql.InputTypes.OrganizationInput;
-import com.company.paw.models.City;
 import com.company.paw.models.Organization;
-import com.company.paw.models.State;
+import com.company.paw.repositories.OrganizationRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -22,8 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrganizationService {
     private final OrganizationRepository organizationRepository;
-    private final CityRepository cityRepository;
-    private final StateRepository stateRepository;
+    private final ConvertService convertService;
 
     @GraphQLQuery
     public List<Organization> allOrganization() {
@@ -37,7 +32,12 @@ public class OrganizationService {
 
     @GraphQLMutation
     public Organization addOrganization(OrganizationInput input) {
-        return organizationRepository.save(addInput(input));
+        Organization organization = convertService.setOrganization(new Organization(), input);
+        organization.setReports(Collections.emptyList());
+        organization.setEmployees(Collections.emptyList());
+        organization.setWeapons(Collections.emptyList());
+        organization.setPlates(Collections.emptyList());
+        return organization;
     }
 
     @GraphQLMutation
@@ -49,38 +49,8 @@ public class OrganizationService {
 
     @GraphQLMutation
     public Organization editOrganization(String organizationId, OrganizationInput input) {
-        return organizationRepository.save(editInput(organizationId, input));
-    }
-
-    private Organization addInput(OrganizationInput input) {
-        State state = new State();
-        state.setName("تهران");
-        City city = new City();
-        city.setName("تهران");
-        city.setState(state);
-        state.setCities(Collections.singletonList(city));
-        return Organization.builder()
-                .name(input.getName())
-                .address(input.getAddress())
-                .state(state)
-                .city(city)
-                .reports(Collections.emptyList())
-                .employees(Collections.emptyList())
-                .weapons(Collections.emptyList())
-                .plates(Collections.emptyList())
-                .build();
-    }
-
-    private Organization editInput(String organizationId, OrganizationInput input) {
-        Organization organization = organizationRepository.findById(organizationId).get();
-        if (input.getName() != null)
-            organization.setName(input.getName());
-        if (input.getAddress() != null)
-            organization.setAddress(input.getAddress());
-        if (input.getCityId() != null)
-            organization.setCity(cityRepository.findById(input.getCityId()).get());
-        if (input.getStateId() != null)
-            organization.setState(stateRepository.findById(input.getStateId()).get());
-        return organization;
+        return organizationRepository.save(
+                convertService.setOrganization(organizationRepository.findById(organizationId).get(), input)
+        );
     }
 }

@@ -1,8 +1,6 @@
 package com.company.paw.models;
 
 import com.company.paw.models.audits.AuditModel;
-import com.company.paw.models.goods.Plate;
-import com.company.paw.models.goods.Weapon;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -19,9 +17,9 @@ import java.util.List;
 @GraphQLType
 public class Organization extends AuditModel {
     private String name;
+    private String address;
     private State state;
     private City city;
-    private String address;
 
     private int bulletsQuantity;
 
@@ -37,7 +35,9 @@ public class Organization extends AuditModel {
     @DBRef
     private List<Plate> plates;
 
-    //todo to be decided after test
+    @DBRef
+    private List<Equipment> equipments;
+//    todo to be decided after test
 //    private String username;
 //    private String password;
 }

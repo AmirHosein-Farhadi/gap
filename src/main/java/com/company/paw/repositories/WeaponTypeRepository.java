@@ -1,6 +1,6 @@
 package com.company.paw.repositories;
 
-import com.company.paw.models.goods.WeaponType;
+import com.company.paw.models.WeaponType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

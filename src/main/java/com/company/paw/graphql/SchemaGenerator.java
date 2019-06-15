@@ -24,6 +24,7 @@ public class SchemaGenerator {
     private final StateService stateService;
     private final WeaponTypeService weaponTypeService;
     private final WeaponService weaponService;
+    private final WeaponNameService weaponNameService;
 
     @Bean
     public GraphQL getGraphQL() {
@@ -31,7 +32,7 @@ public class SchemaGenerator {
                 .withResolverBuilders(
                         new AnnotatedResolverBuilder())
                 .withOperationsFromSingletons(cityService, employeeService, imageService, organizationService, plateService,
-                        positionService, reportsService, requestService, stateService, weaponService, weaponTypeService)
+                        positionService, reportsService, requestService, stateService, weaponService, weaponTypeService, weaponNameService)
                 .withValueMapperFactory(new JacksonValueMapperFactory())
                 .generate();
         return GraphQL.newGraphQL(schema).build();

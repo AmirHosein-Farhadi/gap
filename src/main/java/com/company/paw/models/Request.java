@@ -19,7 +19,7 @@ public class Request extends AuditModel {
     private Organization organization;
     private String title;
     private Image image;
-    private Date dateOnImage;
+    private Date date;
     private String description;
     private Report report;
 }

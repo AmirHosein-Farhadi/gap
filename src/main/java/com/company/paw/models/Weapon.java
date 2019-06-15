@@ -1,6 +1,5 @@
-package com.company.paw.models.goods;
+package com.company.paw.models;
 
-import com.company.paw.models.Image;
 import com.company.paw.models.audits.Product;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
@@ -16,8 +15,8 @@ import java.util.Date;
 @Document
 @GraphQLType
 public class Weapon extends Product {
-    private String name;
     private WeaponType type;
+    private String name;
 
     private Date weaponCardExpirationDate;
     private Image weaponCardImage;

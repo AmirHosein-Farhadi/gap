@@ -13,13 +13,15 @@ public class EmployeeInput {
     private String address;
     private String phoneNumber;
     private String nationalId;
+    private String employeeCardNumber;
+    private String employeeCardExpirationDate;
+
+    private String employeeCardImageId;
     private String positionId;
     private String organizationId;
     private String imageId;
-    private String employeeCardImageId;
-    private String employeeCardNumber;
-    private String employeeCardExpirationDate;
     private String sprayId;
     private String shockerId;
-    private String bisimId;
+    private String talkieId;
+    int bullets;
 }

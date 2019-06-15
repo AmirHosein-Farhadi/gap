@@ -1,4 +1,4 @@
-package com.company.paw.models.goods;
+package com.company.paw.models;
 
 import com.company.paw.models.audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;

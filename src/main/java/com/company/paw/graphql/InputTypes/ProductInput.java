@@ -10,15 +10,12 @@ import lombok.NoArgsConstructor;
 public class ProductInput {
     private String serial;
     private String organizationId;
-    private String esm;
-    private String minorityId;
-    private boolean isPrivate;
+    private String currentUserId;
+    private boolean status;
 
     private String weaponTypeId;            //weapon specific
     private String weaponName;
     private String weaponCardImageId;
     private String weaponCardNumber;
     private String weaponCardExpirationDate;
-//    private boolean isSerializeAble;
-//    private int amount;
 }

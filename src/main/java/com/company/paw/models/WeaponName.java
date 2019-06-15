@@ -1,6 +1,6 @@
-package com.company.paw.models.goods;
+package com.company.paw.models;
 
-import com.company.paw.models.audits.Product;
+import com.company.paw.models.audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,5 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 @Document
 @GraphQLType
-public class Equipment extends Product {
+public class WeaponName extends AuditModel {
+    private String name;
 }

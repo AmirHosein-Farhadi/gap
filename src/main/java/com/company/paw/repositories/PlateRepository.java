@@ -1,6 +1,6 @@
 package com.company.paw.repositories;
 
-import com.company.paw.models.goods.Plate;
+import com.company.paw.models.Plate;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
