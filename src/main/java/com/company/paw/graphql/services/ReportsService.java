@@ -1,6 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.*;
+import com.company.paw.repositories.*;
 import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.Report;
 import com.company.paw.models.Request;

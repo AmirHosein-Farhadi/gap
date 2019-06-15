@@ -1,6 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.WeaponTypeRepository;
+import com.company.paw.repositories.WeaponTypeRepository;
 import com.company.paw.models.goods.WeaponType;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;

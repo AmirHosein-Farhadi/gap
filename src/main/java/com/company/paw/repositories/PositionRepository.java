@@ -1,4 +1,4 @@
-package com.company.paw.Repositories;
+package com.company.paw.repositories;
 
 import com.company.paw.models.Position;
 import org.springframework.data.mongodb.repository.MongoRepository;

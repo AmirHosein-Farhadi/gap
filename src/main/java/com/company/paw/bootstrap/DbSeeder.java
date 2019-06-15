@@ -1,6 +1,6 @@
 package com.company.paw.bootstrap;
 
-import com.company.paw.Repositories.*;
+import com.company.paw.repositories.*;
 import com.company.paw.models.City;
 import com.company.paw.models.Organization;
 import com.company.paw.models.Position;

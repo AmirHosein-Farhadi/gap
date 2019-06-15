@@ -1,6 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.PositionRepository;
+import com.company.paw.repositories.PositionRepository;
 import com.company.paw.models.Position;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;

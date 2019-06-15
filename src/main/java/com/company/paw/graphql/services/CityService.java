@@ -1,7 +1,7 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.CityRepository;
-import com.company.paw.Repositories.StateRepository;
+import com.company.paw.repositories.CityRepository;
+import com.company.paw.repositories.StateRepository;
 import com.company.paw.models.City;
 import com.company.paw.models.State;
 import io.leangen.graphql.annotations.GraphQLMutation;

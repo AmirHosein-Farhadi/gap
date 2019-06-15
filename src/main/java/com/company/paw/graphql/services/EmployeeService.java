@@ -1,6 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.Repositories.*;
+import com.company.paw.repositories.*;
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
 import com.company.paw.models.Organization;

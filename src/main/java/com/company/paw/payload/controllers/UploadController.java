@@ -1,6 +1,6 @@
 package com.company.paw.payload.controllers;
 
-import com.company.paw.Repositories.ImageRepository;
+import com.company.paw.repositories.ImageRepository;
 import com.company.paw.models.Image;
 import com.company.paw.payload.services.FileStorageService;
 import lombok.AllArgsConstructor;
