@@ -1,9 +1,6 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.graphql.InputTypes.EmployeeInput;
-import com.company.paw.graphql.InputTypes.OrganizationInput;
-import com.company.paw.graphql.InputTypes.PlateInput;
-import com.company.paw.graphql.InputTypes.ReportInput;
+import com.company.paw.graphql.InputTypes.*;
 import com.company.paw.models.*;
 import com.company.paw.models.audits.Product;
 import com.company.paw.repositories.*;
@@ -209,7 +206,6 @@ class ConvertService {
     }
 
     Report setReport(Report report, ReportInput input) {
-
         Optional<Plate> plateOptional = plateRepository.findById(input.getProductId());
         Optional<Weapon> weaponOptional = weaponRepository.findById(input.getProductId());
         Optional<Equipment> equipmentOptional = equipmentRepository.findById(input.getProductId());
@@ -220,17 +216,37 @@ class ConvertService {
             report.setProduct(weaponOptional.get());
         else equipmentOptional.ifPresent(report::setProduct);
 
-        report.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
-        report.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
-        report.setBorrowTime(stringToDate(input.getBorrowTime()));
-        report.setRequest(requestRepository.findById(input.getRequestId()).orElse(null));
+        if (input.getEmployeeId() != null)
+            report.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
+        if (input.getOrganizationId() != null)
+            report.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        if (input.getBorrowTime() != null)
+            report.setBorrowTime(stringToDate(input.getBorrowTime()));
+        if (input.getRequestId() != null)
+            report.setRequest(requestRepository.findById(input.getRequestId()).orElse(null));
+        if (input.getBorrowDescription() != null)
+            report.setBorrowDescription(input.getBorrowDescription());
+        if (input.getInformationLetterId() != null)
+            report.setInformationLetter(imageRepository.findById(input.getInformationLetterId()).orElse(null));
+        if (input.getArmyLetterId() != null)
+            report.setArmyLetter(imageRepository.findById(input.getArmyLetterId()).orElse(null));
+        if (input.getAcceptImageId() != null)
+            report.setAcceptImage(imageRepository.findById(input.getAcceptImageId()).orElse(null));
+        if (input.getReciteImageId() != null)
+            report.setReciteImage(imageRepository.findById(input.getReciteImageId()).orElse(null));
+
         report.setBorrowStatus(input.isBorrowStatus());
-        report.setBorrowDescription(input.getBorrowDescription());
-        report.setInformationLetter(imageRepository.findById(input.getInformationLetterId()).orElse(null));
-        report.setArmyLetter(imageRepository.findById(input.getArmyLetterId()).orElse(null));
-        report.setAcceptImage(imageRepository.findById(input.getAcceptImageId()).orElse(null));
-        report.setReciteImage(imageRepository.findById(input.getReciteImageId()).orElse(null));
         return reportRepository.save(report);
+    }
+
+    Request setRequest(Request request, RequestInput input) {
+        request.setDescription(input.getDescription());
+        request.setTitle(input.getTitle());
+        request.setDate(stringToDate(input.getDateOnImage()));
+        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
+        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        request.setImage(imageRepository.findById(input.getImageId()).orElse(null));
+        return request;
     }
 
     public Date stringToDate(String stringDate) {

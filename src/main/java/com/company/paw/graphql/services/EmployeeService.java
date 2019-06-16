@@ -39,6 +39,7 @@ public class EmployeeService {
         employee.setReports(Collections.emptyList());
         employee.setWeapons(Collections.emptyList());
         employee.setPlates(Collections.emptyList());
+        employee.setRequests(Collections.emptyList());
         employeeRepository.save(employee);
 
         Organization organization = organizationRepository.findById(employeeInput.getOrganizationId()).get();

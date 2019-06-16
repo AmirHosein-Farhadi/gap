@@ -20,5 +20,8 @@ public class WeaponType extends AuditModel {
     private long quantity;
 
     @DBRef
+    private List<WeaponName> weaponNames;
+
+    @DBRef
     private List<Weapon> weapons;
 }

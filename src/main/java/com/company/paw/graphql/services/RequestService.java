@@ -1,28 +1,25 @@
 package com.company.paw.graphql.services;
 
+import com.company.paw.graphql.InputTypes.RequestInput;
+import com.company.paw.models.Employee;
+import com.company.paw.models.Request;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.ImageRepository;
 import com.company.paw.repositories.OrganizationRepository;
 import com.company.paw.repositories.RequestRepository;
-import com.company.paw.graphql.InputTypes.RequestInput;
-import com.company.paw.models.Request;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class RequestService {
-    private final EmployeeRepository employeeRepository;
-    private final OrganizationRepository organizationRepository;
     private final RequestRepository requestRepository;
-    private final ImageRepository imageRepository;
+    private final ConvertService convertService;
 
     @GraphQLQuery
     public List<Request> allRequests() {
@@ -54,12 +51,17 @@ public class RequestService {
 
     @GraphQLMutation
     public Request addRequest(RequestInput input) {
-        return requestRepository.save(addInput(input));
+        Request request = convertService.setRequest(new Request(), input);
+
+        Employee employee = request.getEmployee();
+        List<Request> requests = employee.getRequests();
+        requests.add(request);
+        return request;
     }
 
     @GraphQLMutation
     public Request editRequest(String requestId, RequestInput input) {
-        return requestRepository.save(editInput(requestId, input));
+        return convertService.setRequest(requestRepository.findById(requestId).get(), input);
     }
 
     @GraphQLMutation
@@ -67,45 +69,5 @@ public class RequestService {
         Optional<Request> requestOptional = requestRepository.findById(requestId);
         requestOptional.ifPresent(requestRepository::delete);
         return requestOptional.orElse(null);
-    }
-
-    private Request addInput(RequestInput input) {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDateOnImage());
-        } catch (Exception ignored) {
-        }
-        Request request = new Request();
-        request.setDescription(input.getDescription());
-        request.setTitle(input.getTitle());
-        request.setDate(date);
-        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
-        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        request.setImage(imageRepository.findById(input.getImageId()).get());
-        return request;
-    }
-
-    private Request editInput(String requestId, RequestInput input) {
-        Request request = requestRepository.findById(requestId).get();
-        if (input.getDescription() != null) {
-            Date date = null;
-            try {
-                date = new SimpleDateFormat("yyyy/MM/dd").parse(input.getDateOnImage());
-            } catch (Exception ignored) {
-            }
-            request.setDate(date);
-        }
-        if (input.getDescription() != null)
-            request.setDescription(input.getDescription());
-        if (input.getTitle() != null)
-            request.setTitle(input.getTitle());
-        if (input.getEmployeeId() != null)
-            request.setEmployee(employeeRepository.findById(input.getEmployeeId()).get());
-        if (input.getOrganizationId() != null)
-            request.setOrganization(organizationRepository.findById(input.getOrganizationId()).get());
-        if (input.getImageId() != null)
-            request.setImage(imageRepository.findById(input.getImageId()).get());
-
-        return request;
     }
 }

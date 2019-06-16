@@ -40,6 +40,9 @@ public class Employee extends AuditModel {
     private List<Report> reports;
 
     @DBRef
+    private List<Request> requests;
+
+    @DBRef
     private List<Weapon> weapons;
 
     @DBRef

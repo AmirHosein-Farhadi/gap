@@ -20,9 +20,7 @@ import java.util.Optional;
 public class PlateService {
     private final PlateRepository plateRepository;
     private final OrganizationRepository organizationRepository;
-    private final ImageRepository imageRepository;
     private final EmployeeRepository employeeRepository;
-    private final ReportRepository reportRepository;
     private final ConvertService convertService;
 
     @GraphQLQuery
