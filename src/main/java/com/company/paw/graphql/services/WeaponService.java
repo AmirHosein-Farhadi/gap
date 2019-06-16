@@ -13,10 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -77,7 +74,7 @@ public class WeaponService {
 
         WeaponType weaponType = weaponTypeRepository.findById(weapon.getType().getId()).get();
         weaponType.setQuantity(weaponType.getQuantity() + 1);
-        List<Weapon> weapons = weaponType.getWeapons();
+        LinkedList<Weapon> weapons = weaponType.getWeapons();
         weapons.add(weapon);
         weaponType.setWeapons(weapons);
         weaponTypeRepository.save(weaponType);
@@ -115,8 +112,8 @@ public class WeaponService {
         reportRepository.save(report);
 
         weapon.setCurrentUser(employee);
-        List<Report> reports = weapon.getReports();
-        List<Weapon> weapons = employee.getWeapons();
+        LinkedList<Report> reports = weapon.getReports();
+        LinkedList<Weapon> weapons = employee.getWeapons();
         weapons.add(weapon);
         employee.setWeapons(weapons);
         reports.add(report);
@@ -145,7 +142,7 @@ public class WeaponService {
         reportRepository.save(report);
 
         Employee employee = employeeRepository.findById(weapon.getCurrentUser().getId()).orElse(null);
-        List<Weapon> weapons = employee.getWeapons();
+        LinkedList<Weapon> weapons = employee.getWeapons();
         weapons.remove(weapon);
         employee.setWeapons(weapons);
         employeeRepository.save(employee);
@@ -158,7 +155,7 @@ public class WeaponService {
 
         WeaponType weaponType = weaponTypeRepository.findById(weaponOptional.get().getType().getId()).get();
         weaponType.setQuantity(weaponType.getQuantity() + -1);
-        List<Weapon> weapons = weaponType.getWeapons();
+        LinkedList<Weapon> weapons = weaponType.getWeapons();
         weapons.remove(weaponOptional.get());
         weaponType.setWeapons(weapons);
         weaponTypeRepository.save(weaponType);
@@ -211,7 +208,7 @@ public class WeaponService {
 
         if (input.getWeaponCardImageId() != null)
             weapon.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
-        weapon.setReports(Collections.emptyList());
+        weapon.setReports(new LinkedList<>());
         weapon.setCurrentUser(null);
         return weapon;
     }

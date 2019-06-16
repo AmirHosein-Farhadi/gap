@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,7 +118,7 @@ class ConvertService {
         plate.setCurrentUser(employee);
         plate.setOrganization(organization);
 
-        List<Plate> plates = employee.getPlates();
+        LinkedList<Plate> plates = employee.getPlates();
         plates.add(plate);
         employee.setPlates(plates);
 
@@ -125,7 +126,7 @@ class ConvertService {
         plates.add(plate);
         organization.setPlates(plates);
 
-        List<Report> reports = plate.getReports();
+        LinkedList<Report> reports = plate.getReports();
         reports.add(report);
         plate.setReports(reports);
 
@@ -157,9 +158,9 @@ class ConvertService {
         Organization organization = product.getOrganization();
         product.setCurrentUser(null);
         product.setOrganization(null);
-        List<Weapon> weapons;
-        List<Plate> plates;
-        List<Equipment> equipments;
+        LinkedList<Weapon> weapons;
+        LinkedList<Plate> plates;
+        LinkedList<Equipment> equipments;
 
         String type = product.getClass().getName();
         if (type.contains("Weapon")) {

@@ -7,8 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Optional;
 
 @Service
@@ -32,7 +31,7 @@ public class DbSeeder implements CommandLineRunner {
         Optional<City> cityOptional = cityRepository.findByName("تهران");
         Optional<Organization> organizationOptional = organizationRepository.findByName("وزارت کشور");
 
-        State state = new State("تهران", Collections.emptyList());
+        State state = new State("تهران", new LinkedList<>());
         City city = new City("تهران", state);
         if (!cityOptional.isPresent())
             cityRepository.save(city);
@@ -66,21 +65,21 @@ public class DbSeeder implements CommandLineRunner {
                     .state(state)
                     .city(city)
                     .address("میدان جهاد - بلوار فاطمی")
-                    .plates(Collections.emptyList())
-                    .weapons(Collections.emptyList())
-                    .employees(Collections.emptyList())
-                    .reports(Collections.emptyList())
+                    .plates(new LinkedList<>())
+                    .weapons(new LinkedList<>())
+                    .employees(new LinkedList<>())
+                    .reports(new LinkedList<>())
                     .build();
             organizationRepository.save(organization);
         }
 
-        WeaponType weaponType1 = new WeaponType("کمری", 1, Collections.emptyList(), Collections.emptyList());
+        WeaponType weaponType1 = new WeaponType("کمری", 1, new LinkedList<>(), new LinkedList<>());
         saveWeaponType(weaponType1);
 
-        WeaponType weaponType2 = new WeaponType("نیمه سنگین", 1, Collections.emptyList(), Collections.emptyList());
+        WeaponType weaponType2 = new WeaponType("نیمه سنگین", 1, new LinkedList<>(), new LinkedList<>());
         saveWeaponType(weaponType2);
 
-        WeaponType weaponType3 = new WeaponType("سنگین", 1, Collections.emptyList(), Collections.emptyList());
+        WeaponType weaponType3 = new WeaponType("سنگین", 1, new LinkedList<>(), new LinkedList<>());
         saveWeaponType(weaponType3);
 
 
@@ -129,9 +128,10 @@ public class DbSeeder implements CommandLineRunner {
         if (!weaponNameOptional.isPresent()) {
             weaponNameRepository.save(weaponName);
 
-            List<WeaponName> weaponNames = weaponType.getWeaponNames();
-//            weaponNames.add(weaponName);
+            LinkedList<WeaponName> weaponNames = weaponType.getWeaponNames();
+            weaponNames.add(weaponName);
             weaponType.setWeaponNames(weaponNames);
+            weaponTypeRepository.save(weaponType);
         }
     }
 }

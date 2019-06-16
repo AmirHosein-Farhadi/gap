@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -30,7 +31,7 @@ public class StateService {
 
     @GraphQLMutation
     public State addState(String name) {
-        return stateRepository.save(new State(name, Collections.emptyList()));
+        return stateRepository.save(new State(name, new LinkedList<>()));
     }
 
     @GraphQLMutation

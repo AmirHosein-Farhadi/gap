@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -24,19 +25,19 @@ public class Organization extends AuditModel {
     private int bulletsQuantity;
 
     @DBRef
-    private List<Report> reports;
+    private LinkedList<Report> reports;
 
     @DBRef
-    private List<Employee> employees;
+    private LinkedList<Employee> employees;
 
     @DBRef
-    private List<Weapon> weapons;
+    private LinkedList<Weapon> weapons;
 
     @DBRef
-    private List<Plate> plates;
+    private LinkedList<Plate> plates;
 
     @DBRef
-    private List<Equipment> equipments;
+    private LinkedList<Equipment> equipments;
 //    todo to be decided after test
 //    private String username;
 //    private String password;

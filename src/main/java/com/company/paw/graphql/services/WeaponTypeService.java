@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class WeaponTypeService {
 
     @GraphQLMutation
     public WeaponType addWeaponTypes(String name) {
-        return weaponTypeRepository.save(new WeaponType(name, 0, Collections.emptyList(), Collections.emptyList()));
+        return weaponTypeRepository.save(new WeaponType(name, 0, new LinkedList<>(), new LinkedList<>()));
     }
 
     @GraphQLMutation

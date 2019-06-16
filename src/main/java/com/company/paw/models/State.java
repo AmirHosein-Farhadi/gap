@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -19,10 +20,10 @@ public class State extends AuditModel {
     private String name;
 
     @DBRef
-    private List<City> cities;
+    private LinkedList<City> cities;
 
     public void addSubCity(City city) {
-        List<City> cities = this.cities;
+        LinkedList<City> cities = this.cities;
         cities.add(city);
         this.cities = cities;
     }

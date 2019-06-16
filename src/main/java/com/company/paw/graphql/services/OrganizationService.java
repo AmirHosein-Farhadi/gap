@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +34,10 @@ public class OrganizationService {
     @GraphQLMutation
     public Organization addOrganization(OrganizationInput input) {
         Organization organization = convertService.setOrganization(new Organization(), input);
-        organization.setReports(Collections.emptyList());
-        organization.setEmployees(Collections.emptyList());
-        organization.setWeapons(Collections.emptyList());
-        organization.setPlates(Collections.emptyList());
+        organization.setReports(new LinkedList<>());
+        organization.setEmployees(new LinkedList<>());
+        organization.setWeapons(new LinkedList<>());
+        organization.setPlates(new LinkedList<>());
         return organization;
     }
 

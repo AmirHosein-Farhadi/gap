@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -24,5 +25,5 @@ public abstract class Product extends AuditModel {
     private boolean status;
 
     @DBRef
-    private List<Report> reports;
+    private LinkedList<Report> reports;
 }

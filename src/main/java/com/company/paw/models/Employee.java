@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -37,14 +38,14 @@ public class Employee extends AuditModel {
     private int bullets;
 
     @DBRef
-    private List<Report> reports;
+    private LinkedList<Report> reports;
 
     @DBRef
-    private List<Request> requests;
+    private LinkedList<Request> requests;
 
     @DBRef
-    private List<Weapon> weapons;
+    private LinkedList<Weapon> weapons;
 
     @DBRef
-    private List<Plate> plates;
+    private LinkedList<Plate> plates;
 }

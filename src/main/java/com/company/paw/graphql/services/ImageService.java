@@ -1,12 +1,13 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.repositories.ImageRepository;
 import com.company.paw.models.Image;
+import com.company.paw.repositories.ImageRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,9 +34,8 @@ public class ImageService {
         return imageOptional.orElse(null);
     }
 
-    List<Image> imagesIdToImages(List<String> imagesId) {
+    LinkedList<Image> imagesIdToImages(List<String> imagesId) {
         return imagesId.stream()
-                .map(image -> imageRepository.findById(image).orElse(null))
-                .collect(Collectors.toList());
+                .map(image -> imageRepository.findById(image).orElse(null)).collect(Collectors.toCollection(LinkedList::new));
     }
 }

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,10 +37,10 @@ public class EmployeeService {
     @GraphQLMutation
     public Employee addEmployee(EmployeeInput employeeInput) {
         Employee employee = convertService.setEmployee(new Employee(), employeeInput);
-        employee.setReports(Collections.emptyList());
-        employee.setWeapons(Collections.emptyList());
-        employee.setPlates(Collections.emptyList());
-        employee.setRequests(Collections.emptyList());
+        employee.setReports(new LinkedList<>());
+        employee.setWeapons(new LinkedList<>());
+        employee.setPlates(new LinkedList<>());
+        employee.setRequests(new LinkedList<>());
         employeeRepository.save(employee);
 
         Organization organization = organizationRepository.findById(employeeInput.getOrganizationId()).get();

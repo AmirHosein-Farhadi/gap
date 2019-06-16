@@ -6,6 +6,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -21,5 +22,5 @@ public class Plate extends Product {
 
     private int plateStatus;
     private boolean isPrivate;
-    private List<Image> minority;
+    private LinkedList<Image> minority;
 }
