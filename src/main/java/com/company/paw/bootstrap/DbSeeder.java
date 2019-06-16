@@ -1,18 +1,14 @@
 package com.company.paw.bootstrap;
 
+import com.company.paw.models.*;
 import com.company.paw.repositories.*;
-import com.company.paw.models.City;
-import com.company.paw.models.Organization;
-import com.company.paw.models.Position;
-import com.company.paw.models.State;
-import com.company.paw.models.WeaponName;
-import com.company.paw.models.WeaponType;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -78,36 +74,42 @@ public class DbSeeder implements CommandLineRunner {
             organizationRepository.save(organization);
         }
 
-        WeaponType weaponType1 = new WeaponType("کمری", 1, Collections.emptyList());
+        WeaponType weaponType1 = new WeaponType("کمری", 1, Collections.emptyList(), Collections.emptyList());
         saveWeaponType(weaponType1);
 
-        WeaponType weaponType2 = new WeaponType("نیمه سنگین", 1, Collections.emptyList());
+        WeaponType weaponType2 = new WeaponType("نیمه سنگین", 1, Collections.emptyList(), Collections.emptyList());
         saveWeaponType(weaponType2);
 
-        WeaponType weaponType3 = new WeaponType("سنگین", 1, Collections.emptyList());
+        WeaponType weaponType3 = new WeaponType("سنگین", 1, Collections.emptyList(), Collections.emptyList());
         saveWeaponType(weaponType3);
 
 
         WeaponName weaponName1 = new WeaponName("استار");
-        saveWeaponName(weaponName1);
+        saveWeaponName(weaponName1, weaponType1);
 
         WeaponName weaponName2 = new WeaponName("برونینگ");
-        saveWeaponName(weaponName2);
+        saveWeaponName(weaponName2, weaponType1);
 
         WeaponName weaponName3 = new WeaponName("برتا");
-        saveWeaponName(weaponName3);
+        saveWeaponName(weaponName3, weaponType1);
 
         WeaponName weaponName4 = new WeaponName("زعاف");
-        saveWeaponName(weaponName4);
+        saveWeaponName(weaponName4, weaponType1);
 
         WeaponName weaponName5 = new WeaponName("زیگ زائو");
-        saveWeaponName(weaponName5);
+        saveWeaponName(weaponName5, weaponType1);
 
         WeaponName weaponName6 = new WeaponName("لاما");
-        saveWeaponName(weaponName6);
+        saveWeaponName(weaponName6, weaponType1);
 
         WeaponName weaponName7 = new WeaponName("ماکاروف");
-        saveWeaponName(weaponName7);
+        saveWeaponName(weaponName7, weaponType1);
+
+        WeaponName weaponName8 = new WeaponName("کلاش");
+        saveWeaponName(weaponName8, weaponType2);
+
+        WeaponName weaponName9 = new WeaponName("یوزی");
+        saveWeaponName(weaponName9, weaponType2);
     }
 
     private void savePosition(Position position) {
@@ -122,9 +124,14 @@ public class DbSeeder implements CommandLineRunner {
             weaponTypeRepository.save(weaponType);
     }
 
-    private void saveWeaponName(WeaponName weaponName) {
+    private void saveWeaponName(WeaponName weaponName, WeaponType weaponType) {
         Optional<WeaponName> weaponNameOptional = weaponNameRepository.findByName(weaponName.getName());
-        if (!weaponNameOptional.isPresent())
+        if (!weaponNameOptional.isPresent()) {
             weaponNameRepository.save(weaponName);
+
+            List<WeaponName> weaponNames = weaponType.getWeaponNames();
+//            weaponNames.add(weaponName);
+            weaponType.setWeaponNames(weaponNames);
+        }
     }
 }
