@@ -6,7 +6,10 @@ import com.company.paw.models.Employee;
 import com.company.paw.models.Organization;
 import com.company.paw.models.Weapon;
 import com.company.paw.models.WeaponType;
-import com.company.paw.repositories.*;
+import com.company.paw.repositories.EmployeeRepository;
+import com.company.paw.repositories.OrganizationRepository;
+import com.company.paw.repositories.WeaponRepository;
+import com.company.paw.repositories.WeaponTypeRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -23,45 +26,11 @@ public class WeaponService {
     private final WeaponTypeRepository weaponTypeRepository;
     private final OrganizationRepository organizationRepository;
     private final EmployeeRepository employeeRepository;
-    private final RequestRepository requestRepository;
-    private final ReportRepository reportRepository;
-    private final ImageRepository imageRepository;
     private final ConvertService convertService;
 
     @GraphQLQuery
     public List<Weapon> allWeapons() {
-        List<Weapon> weapons = weaponRepository.findAll();
-        for (Weapon weapon : weapons)
-            if (weapon.getType().getName().equals("افشانه") || weapon.getType().getName().equals("شوکر") || weapon.getType().getName().equals("بیسیم"))
-                weapons.remove(weapon);
-        return weapons;
-    }
-
-    @GraphQLQuery
-    public List<Weapon> allShockers() {
-        List<Weapon> weapons = weaponRepository.findAll();
-        for (Weapon weapon : weapons)
-            if (!weapon.getType().getName().equals("شوکر"))
-                weapons.remove(weapon);
-        return weapons;
-    }
-
-    @GraphQLQuery
-    public List<Weapon> allSprays() {
-        List<Weapon> weapons = weaponRepository.findAll();
-        for (Weapon weapon : weapons)
-            if (!weapon.getType().getName().equals("افشانه"))
-                weapons.remove(weapon);
-        return weapons;
-    }
-
-    @GraphQLQuery
-    public List<Weapon> allBisims() {
-        List<Weapon> weapons = weaponRepository.findAll();
-        for (Weapon weapon : weapons)
-            if (!weapon.getType().getName().equals("بیسیم"))
-                weapons.remove(weapon);
-        return weapons;
+        return weaponRepository.findAll();
     }
 
     @GraphQLQuery
