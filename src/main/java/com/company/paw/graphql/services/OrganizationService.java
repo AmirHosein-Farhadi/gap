@@ -9,7 +9,6 @@ import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +37,7 @@ public class OrganizationService {
         organization.setEmployees(new LinkedList<>());
         organization.setWeapons(new LinkedList<>());
         organization.setPlates(new LinkedList<>());
-        return organization;
+        return organizationRepository.save(organization);
     }
 
     @GraphQLMutation

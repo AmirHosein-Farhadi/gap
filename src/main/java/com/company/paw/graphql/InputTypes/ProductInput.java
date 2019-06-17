@@ -14,7 +14,7 @@ public class ProductInput {
     private boolean status;
 
     private String weaponTypeId;            //weapon specific
-    private String weaponName;
+    private String weaponNameId;
     private String weaponCardImageId;
     private String weaponCardNumber;
     private String weaponCardExpirationDate;

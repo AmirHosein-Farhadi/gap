@@ -16,7 +16,7 @@ import java.util.Date;
 @GraphQLType
 public class Weapon extends Product {
     private WeaponType type;
-    private String name;
+    private WeaponName name;
 
     private Date weaponCardExpirationDate;
     private Image weaponCardImage;

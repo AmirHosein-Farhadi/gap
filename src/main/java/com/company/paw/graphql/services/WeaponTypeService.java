@@ -1,13 +1,14 @@
 package com.company.paw.graphql.services;
 
+import com.company.paw.models.WeaponName;
 import com.company.paw.models.WeaponType;
+import com.company.paw.repositories.WeaponNameRepository;
 import com.company.paw.repositories.WeaponTypeRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class WeaponTypeService {
     private final WeaponTypeRepository weaponTypeRepository;
+    private final WeaponNameRepository weaponNameRepository;
 
     @GraphQLQuery
     public List<WeaponType> allWeaponTypes() {
@@ -44,5 +46,15 @@ public class WeaponTypeService {
         Optional<WeaponType> weaponTypeOptional = weaponTypeRepository.findById(weaponTypeId);
         weaponTypeOptional.ifPresent(weaponTypeRepository::delete);
         return weaponTypeOptional.orElse(null);
+    }
+
+    @GraphQLMutation
+    public WeaponType addWeaponNameToType(String weaponTypeId, String weaponName) {
+        WeaponName name = weaponNameRepository.save(new WeaponName(weaponName));
+        WeaponType weaponType = weaponTypeRepository.findById(weaponTypeId).get();
+        LinkedList<WeaponName> weaponNames = weaponType.getWeaponNames();
+        weaponNames.add(name);
+        weaponType.setWeaponNames(weaponNames);
+        return weaponTypeRepository.save(weaponType);
     }
 }

@@ -34,6 +34,7 @@ public class DbSeeder implements CommandLineRunner {
         State state = new State("تهران", new LinkedList<>());
         City city = new City("تهران", state);
         if (!cityOptional.isPresent())
+            city.setState(state);
             cityRepository.save(city);
 
         if (!stateOptional.isPresent()) {

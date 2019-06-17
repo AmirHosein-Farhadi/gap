@@ -28,6 +28,8 @@ class ConvertService {
     private final ReportRepository reportRepository;
     private final PlateRepository plateRepository;
     private final WeaponRepository weaponRepository;
+    private final WeaponTypeRepository weaponTypeRepository;
+    private final WeaponNameRepository weaponNameRepository;
     private final RequestRepository requestRepository;
     private final ImageService imageService;
 
@@ -112,8 +114,26 @@ class ConvertService {
         return plate;
     }
 
+    Weapon setWeapon(Weapon weapon, ProductInput input) {
+        if (input.getSerial() != null)
+            weapon.setSerial(input.getSerial());
+        if (input.getOrganizationId() != null)
+            weapon.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        if (input.getWeaponTypeId() != null)
+            weapon.setType(weaponTypeRepository.findById(input.getWeaponTypeId()).orElse(null));
+        if (input.getWeaponNameId() != null)
+            weapon.setName(weaponNameRepository.findById(input.getWeaponNameId()).orElse(null));
+        if (input.getWeaponCardImageId() != null)
+            weapon.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
+        if (input.getWeaponCardNumber() != null)
+            weapon.setWeaponCardNumber(input.getWeaponCardNumber());
+        weapon.setWeaponCardExpirationDate(stringToDate(input.getWeaponCardExpirationDate()));
+        weapon.setStatus(input.isStatus());
+        return weapon;
+    }
+
     Plate plateInUse(Plate plate, Employee employee, Organization organization, ReportInput input) {
-        Report report = setReport(new Report(), input);
+        handelReport(plate,employee,organization,input);
         plate.setPlateStatus(2);
         plate.setCurrentUser(employee);
         plate.setOrganization(organization);
@@ -125,10 +145,30 @@ class ConvertService {
         plates = organization.getPlates();
         plates.add(plate);
         organization.setPlates(plates);
+        return plateRepository.save(plate);
+    }
 
-        LinkedList<Report> reports = plate.getReports();
+    Weapon weaponInUse(Weapon weapon, Employee employee, Organization organization, ReportInput input) {
+        handelReport(weapon,employee,organization,input);
+        weapon.setCurrentUser(employee);
+        weapon.setOrganization(organization);
+
+        LinkedList<Weapon> weapons = employee.getWeapons();
+        weapons.add(weapon);
+        employee.setWeapons(weapons);
+
+        weapons = organization.getWeapons();
+        weapons.add(weapon);
+        organization.setWeapons(weapons);
+
+        return weaponRepository.save(weapon);
+    }
+
+    private void handelReport(Product product,Employee employee, Organization organization, ReportInput input){
+        Report report = setReport(new Report(), input);
+        LinkedList<Report> reports = product.getReports();
         reports.add(report);
-        plate.setReports(reports);
+        product.setReports(reports);
 
         reports = employee.getReports();
         reports.add(report);
@@ -140,7 +180,6 @@ class ConvertService {
 
         organizationRepository.save(organization);
         employeeRepository.save(employee);
-        return plateRepository.save(plate);
     }
 
     Product returnProduct(String productId, boolean returnStatus, String returnDate, String returnDescription) {
@@ -250,7 +289,7 @@ class ConvertService {
         return request;
     }
 
-    public Date stringToDate(String stringDate) {
+    private Date stringToDate(String stringDate) {
         Date date = null;
         try {
             date = new SimpleDateFormat("yyyy/MM/dd").parse(stringDate);
