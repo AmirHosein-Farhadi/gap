@@ -5,8 +5,9 @@ import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.Employee;
 import com.company.paw.models.Organization;
 import com.company.paw.models.Plate;
-import com.company.paw.models.Report;
-import com.company.paw.repositories.*;
+import com.company.paw.repositories.EmployeeRepository;
+import com.company.paw.repositories.OrganizationRepository;
+import com.company.paw.repositories.PlateRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -48,8 +49,19 @@ public class PlateService {
     }
 
     @GraphQLMutation
-    public Plate editPlate(String plateId, PlateInput input, PlateInput newPlate) {
-        return plateRepository.save(editInput(plateId, input, newPlate));
+    public Plate editPlate(String privatePlateId, PlateInput privatePlateInput, boolean isChanged, PlateInput newPlate) {
+        Plate privatePlate = convertService.setPlate(plateRepository.findById(privatePlateId).get(), privatePlateInput);
+        plateRepository.save(privatePlate);
+
+        if (isChanged){
+            Plate backupPlate = convertService.setPlate(new Plate(), newPlate);
+            plateRepository.save(backupPlate);
+            privatePlate.setMappedPlate(backupPlate);
+            backupPlate.setMappedPlate(privatePlate);
+            plateRepository.save(backupPlate);
+        }
+
+        return plateRepository.save(privatePlate);
     }
 
     @GraphQLMutation
@@ -69,28 +81,11 @@ public class PlateService {
         plate.getMappedPlate().setCurrentUser(employee);
         plate.getMappedPlate().setOrganization(organization);
 
-        return convertService.plateInUse(plate,employee,organization,input);
+        return convertService.plateInUse(plate, employee, organization, input);
     }
 
     @GraphQLMutation
     public Plate returnPlate(String plateId, boolean returnStatus, String returnDate, String returnDescription) {
-        return (Plate)convertService.returnProduct(plateId, returnStatus,returnDate,returnDescription);
-    }
-
-    private Plate editInput(String plateId, PlateInput input, PlateInput newPlate) {
-        Plate plate = convertService.setPlate(plateRepository.findById(plateId).get(), input);
-        if (plate.isPrivate() && newPlate != null) {
-            Plate newMappedPlate = convertService.setPlate(new Plate(), newPlate);
-            Plate oldMappedPlate = plate.getMappedPlate();
-            newMappedPlate.setMappedPlate(plate);
-            plateRepository.save(newMappedPlate);
-
-            oldMappedPlate.setMappedPlate(null);
-            plateRepository.save(oldMappedPlate);
-
-            plate.setMappedPlate(newMappedPlate);
-            plateRepository.save(plate);
-        }
-        return plate;
+        return (Plate) convertService.returnProduct(plateId, returnStatus, returnDate, returnDescription);
     }
 }

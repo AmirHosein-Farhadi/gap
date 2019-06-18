@@ -183,6 +183,7 @@ class ConvertService {
             weaponRepository.save((Weapon) product);
         else if (type.contains("Plate"))
             plateRepository.save((Plate) product);
+        //todo Equipment
 
         organizationRepository.save(organization);
         employeeRepository.save(employee);
@@ -201,13 +202,20 @@ class ConvertService {
 
         Employee employee = product.getCurrentUser();
         Organization organization = product.getOrganization();
+
         product.setCurrentUser(null);
         product.setOrganization(null);
+        String type = product.getClass().getName();
+        if (type.contains("Weapon"))
+            weaponRepository.save((Weapon) product);
+        else if (type.contains("Plate"))
+            plateRepository.save((Plate) product);
+        //todo Equipment
+
         LinkedList<Weapon> weapons;
         LinkedList<Plate> plates;
         LinkedList<Equipment> equipments;
 
-        String type = product.getClass().getName();
         if (type.contains("Weapon")) {
             weapons = employee.getWeapons();
             weapons.remove(product);
@@ -248,10 +256,11 @@ class ConvertService {
         report.setReturnTime(stringToDate(returnDate));
         report.setReturnDescription(returnDescription);
         reportRepository.save(report);
+
         return product;
     }
 
-    Report setReport(Report report, ReportInput input) {
+    private Report setReport(Report report, ReportInput input) {
         Optional<Plate> plateOptional = plateRepository.findById(input.getProductId());
         Optional<Weapon> weaponOptional = weaponRepository.findById(input.getProductId());
         Optional<Equipment> equipmentOptional = equipmentRepository.findById(input.getProductId());
