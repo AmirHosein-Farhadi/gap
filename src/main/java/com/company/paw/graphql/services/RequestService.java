@@ -4,14 +4,13 @@ import com.company.paw.graphql.InputTypes.RequestInput;
 import com.company.paw.models.Employee;
 import com.company.paw.models.Request;
 import com.company.paw.repositories.EmployeeRepository;
-import com.company.paw.repositories.ImageRepository;
-import com.company.paw.repositories.OrganizationRepository;
 import com.company.paw.repositories.RequestRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,12 +19,14 @@ import java.util.Optional;
 public class RequestService {
     private final RequestRepository requestRepository;
     private final ConvertService convertService;
+    private final EmployeeRepository employeeRepository;
 
     @GraphQLQuery
     public List<Request> allRequests() {
         return requestRepository.findAll();
     }
 
+    //todo with better implementation
     @GraphQLQuery
     public List<Request> handeledRequests() {
         List<Request> requests = requestRepository.findAll();
@@ -52,16 +53,18 @@ public class RequestService {
     @GraphQLMutation
     public Request addRequest(RequestInput input) {
         Request request = convertService.setRequest(new Request(), input);
-
+        requestRepository.save(request);
         Employee employee = request.getEmployee();
-        List<Request> requests = employee.getRequests();
+        LinkedList<Request> requests = employee.getRequests();
         requests.add(request);
+        employee.setRequests(requests);
+        employeeRepository.save(employee);
         return request;
     }
 
     @GraphQLMutation
     public Request editRequest(String requestId, RequestInput input) {
-        return convertService.setRequest(requestRepository.findById(requestId).get(), input);
+        return requestRepository.save(convertService.setRequest(requestRepository.findById(requestId).get(), input));
     }
 
     @GraphQLMutation
