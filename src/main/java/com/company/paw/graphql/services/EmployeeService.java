@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -43,9 +42,11 @@ public class EmployeeService {
         employee.setRequests(new LinkedList<>());
         employeeRepository.save(employee);
 
-        Organization organization = organizationRepository.findById(employeeInput.getOrganizationId()).get();
-        organization.getEmployees().add(employee);
-        organizationRepository.save(organization);
+        Optional<Organization> organizationOptional = organizationRepository.findById(employeeInput.getOrganizationId());
+        if (organizationOptional.isPresent()) {
+            organizationOptional.get().getEmployees().add(employee);
+            organizationRepository.save(organizationOptional.get());
+        }
 
         return employee;
     }
