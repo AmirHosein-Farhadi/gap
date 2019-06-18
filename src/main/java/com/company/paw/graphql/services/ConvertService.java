@@ -164,31 +164,6 @@ class ConvertService {
         return weaponRepository.save(weapon);
     }
 
-    private void handelReport(Product product, Employee employee, Organization organization, ReportInput input) {
-        Report report = setReport(new Report(), input);
-        LinkedList<Report> reports = product.getReports();
-        reports.add(report);
-        product.setReports(reports);
-
-        reports = employee.getReports();
-        reports.add(report);
-        employee.setReports(reports);
-
-        reports = organization.getReports();
-        reports.add(report);
-        organization.setReports(reports);
-
-        String type = product.getClass().getName();
-        if (type.contains("Weapon"))
-            weaponRepository.save((Weapon) product);
-        else if (type.contains("Plate"))
-            plateRepository.save((Plate) product);
-        //todo Equipment
-
-        organizationRepository.save(organization);
-        employeeRepository.save(employee);
-    }
-
     Product returnProduct(String productId, boolean returnStatus, String returnDate, String returnDescription) {
         Optional<Plate> plateOptional = plateRepository.findById(productId);
         Optional<Weapon> weaponOptional = weaponRepository.findById(productId);
@@ -260,6 +235,60 @@ class ConvertService {
         return product;
     }
 
+    Request setRequest(Request request, RequestInput input) {
+        request.setDescription(input.getDescription());
+        request.setTitle(input.getTitle());
+        request.setDate(stringToDate(input.getDateOnImage()));
+        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
+        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        request.setImage(imageRepository.findById(input.getImageId()).orElse(null));
+        return request;
+    }
+
+    Equipment setEquipment(Equipment equipment, int equipmentType, ProductInput input) {
+        Organization organization = null;
+        if (input.getOrganizationId() != null)
+            organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
+
+        if (input.getSerial() != null)
+            equipment.setSerial(input.getSerial());
+        if (organization != null){
+            equipment.setOrganization(organization);
+            LinkedList<Equipment> equipments = organization.getEquipments()
+        }
+        equipment.setType(equipmentType);
+        equipment.setStatus(input.isStatus());
+
+
+
+        return equipment;
+    }
+
+    private void handelReport(Product product, Employee employee, Organization organization, ReportInput input) {
+        Report report = setReport(new Report(), input);
+        LinkedList<Report> reports = product.getReports();
+        reports.add(report);
+        product.setReports(reports);
+
+        reports = employee.getReports();
+        reports.add(report);
+        employee.setReports(reports);
+
+        reports = organization.getReports();
+        reports.add(report);
+        organization.setReports(reports);
+
+        String type = product.getClass().getName();
+        if (type.contains("Weapon"))
+            weaponRepository.save((Weapon) product);
+        else if (type.contains("Plate"))
+            plateRepository.save((Plate) product);
+        //todo Equipment
+
+        organizationRepository.save(organization);
+        employeeRepository.save(employee);
+    }
+
     private Report setReport(Report report, ReportInput input) {
         Optional<Plate> plateOptional = plateRepository.findById(input.getProductId());
         Optional<Weapon> weaponOptional = weaponRepository.findById(input.getProductId());
@@ -292,16 +321,6 @@ class ConvertService {
 
         report.setBorrowStatus(input.isBorrowStatus());
         return reportRepository.save(report);
-    }
-
-    Request setRequest(Request request, RequestInput input) {
-        request.setDescription(input.getDescription());
-        request.setTitle(input.getTitle());
-        request.setDate(stringToDate(input.getDateOnImage()));
-        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
-        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
-        request.setImage(imageRepository.findById(input.getImageId()).orElse(null));
-        return request;
     }
 
     private Date stringToDate(String stringDate) {
