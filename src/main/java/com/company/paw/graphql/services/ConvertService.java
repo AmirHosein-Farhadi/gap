@@ -133,7 +133,7 @@ class ConvertService {
     }
 
     Plate plateInUse(Plate plate, Employee employee, Organization organization, ReportInput input) {
-        handelReport(plate,employee,organization,input);
+        handelReport(plate, employee, organization, input);
         plate.setPlateStatus(2);
         plate.setCurrentUser(employee);
         plate.setOrganization(organization);
@@ -149,7 +149,7 @@ class ConvertService {
     }
 
     Weapon weaponInUse(Weapon weapon, Employee employee, Organization organization, ReportInput input) {
-        handelReport(weapon,employee,organization,input);
+        handelReport(weapon, employee, organization, input);
         weapon.setCurrentUser(employee);
         weapon.setOrganization(organization);
 
@@ -164,7 +164,7 @@ class ConvertService {
         return weaponRepository.save(weapon);
     }
 
-    private void handelReport(Product product,Employee employee, Organization organization, ReportInput input){
+    private void handelReport(Product product, Employee employee, Organization organization, ReportInput input) {
         Report report = setReport(new Report(), input);
         LinkedList<Report> reports = product.getReports();
         reports.add(report);
@@ -177,6 +177,12 @@ class ConvertService {
         reports = organization.getReports();
         reports.add(report);
         organization.setReports(reports);
+
+        String type = product.getClass().getName();
+        if (type.contains("Weapon"))
+            weaponRepository.save((Weapon) product);
+        else if (type.contains("Plate"))
+            plateRepository.save((Plate) product);
 
         organizationRepository.save(organization);
         employeeRepository.save(employee);
