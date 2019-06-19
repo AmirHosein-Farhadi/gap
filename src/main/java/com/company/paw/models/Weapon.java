@@ -21,6 +21,4 @@ public class Weapon extends Product {
     private Date weaponCardExpirationDate;
     private Image weaponCardImage;
     private String weaponCardNumber;
-//    private boolean isSerializeAble;
-//    private int quantity;
 }

@@ -11,13 +11,16 @@ import com.company.paw.repositories.PlateRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PlateService {
     private final PlateRepository plateRepository;
     private final OrganizationRepository organizationRepository;
@@ -38,9 +41,32 @@ public class PlateService {
     public Plate addPlate(PlateInput privatePlateInput, PlateInput backupPlateInput) {
         Plate privatePlate = convertService.setPlate(new Plate(), privatePlateInput);
         plateRepository.save(privatePlate);
+//org change
+        LinkedList<Plate> plates;
+        Organization organization = privatePlate.getOrganization();
+        log.error(privatePlate.getOrganization().getId());
+        if (organization != null) {
+            plates = organization.getPlates();
+            if (!plates.contains(privatePlate)) {
+                plates.add(privatePlate);
+                organization.setPlates(plates);
+                organizationRepository.save(organization);
+            }
+        }
 
         Plate backupPlate = convertService.setPlate(new Plate(), backupPlateInput);
         plateRepository.save(backupPlate);
+
+
+        organization = backupPlate.getOrganization();
+        if (organization != null) {
+            plates = organization.getPlates();
+            if (!plates.contains(backupPlate)) {
+                plates.add(backupPlate);
+                organization.setPlates(plates);
+                organizationRepository.save(organization);
+            }
+        }
 
         privatePlate.setMappedPlate(backupPlate);
         backupPlate.setMappedPlate(privatePlate);
@@ -53,7 +79,7 @@ public class PlateService {
         Plate privatePlate = convertService.setPlate(plateRepository.findById(privatePlateId).get(), privatePlateInput);
         plateRepository.save(privatePlate);
 
-        if (isChanged){
+        if (isChanged) {
             Plate backupPlate = convertService.setPlate(new Plate(), newPlate);
             plateRepository.save(backupPlate);
             privatePlate.setMappedPlate(backupPlate);

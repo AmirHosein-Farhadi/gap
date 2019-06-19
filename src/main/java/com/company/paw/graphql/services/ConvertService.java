@@ -136,30 +136,23 @@ class ConvertService {
         handelReport(plate, employee, organization, input);
         plate.setPlateStatus(2);
         plate.setCurrentUser(employee);
-        plate.setOrganization(organization);
 
         LinkedList<Plate> plates = employee.getPlates();
         plates.add(plate);
         employee.setPlates(plates);
 
-        plates = organization.getPlates();
-        plates.add(plate);
-        organization.setPlates(plates);
         return plateRepository.save(plate);
     }
 
     Weapon weaponInUse(Weapon weapon, Employee employee, Organization organization, ReportInput input) {
         handelReport(weapon, employee, organization, input);
         weapon.setCurrentUser(employee);
-        weapon.setOrganization(organization);
+        weaponRepository.save(weapon);
 
         LinkedList<Weapon> weapons = employee.getWeapons();
         weapons.add(weapon);
         employee.setWeapons(weapons);
-
-        weapons = organization.getWeapons();
-        weapons.add(weapon);
-        organization.setWeapons(weapons);
+        employeeRepository.save(employee);
 
         return weaponRepository.save(weapon);
     }
@@ -167,12 +160,15 @@ class ConvertService {
     Product returnProduct(String productId, boolean returnStatus, String returnDate, String returnDescription) {
         Optional<Plate> plateOptional = plateRepository.findById(productId);
         Optional<Weapon> weaponOptional = weaponRepository.findById(productId);
+        Optional<Equipment> equipmentOptional = equipmentRepository.findById(productId);
 
         Product product = null;
         if (plateOptional.isPresent())
             product = plateOptional.get();
         else if (weaponOptional.isPresent())
             product = weaponOptional.get();
+        else if (equipmentOptional.isPresent())
+            product = equipmentOptional.get();
         assert product != null;
 
         Employee employee = product.getCurrentUser();
@@ -185,28 +181,20 @@ class ConvertService {
             weaponRepository.save((Weapon) product);
         else if (type.contains("Plate"))
             plateRepository.save((Plate) product);
-        //todo Equipment
+        else if (type.contains("Equipment"))
+            equipmentRepository.save((Equipment) product);
 
         LinkedList<Weapon> weapons;
         LinkedList<Plate> plates;
-        LinkedList<Equipment> equipments;
 
         if (type.contains("Weapon")) {
             weapons = employee.getWeapons();
             weapons.remove(product);
             employee.setWeapons(weapons);
-
-            weapons = organization.getWeapons();
-            weapons.remove(product);
-            organization.setWeapons(weapons);
         } else if (type.contains("Plate")) {
             plates = employee.getPlates();
             plates.remove(product);
             employee.setPlates(plates);
-
-            plates = organization.getPlates();
-            plates.remove(product);
-            organization.setPlates(plates);
         } else if (type.contains("Equipment")) {
             Equipment equipment = (Equipment) product;
             int equipmentType = equipment.getType();
@@ -216,10 +204,6 @@ class ConvertService {
                 employee.setShocker(null);
             else if (equipmentType == 3)
                 employee.setTalkie(null);
-
-            equipments = organization.getEquipments();
-            equipments.remove(product);
-            organization.setEquipments(equipments);
         }
 
         employeeRepository.save(employee);
@@ -246,21 +230,10 @@ class ConvertService {
     }
 
     Equipment setEquipment(Equipment equipment, int equipmentType, ProductInput input) {
-        Organization organization = null;
-        if (input.getOrganizationId() != null)
-            organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
-
         if (input.getSerial() != null)
             equipment.setSerial(input.getSerial());
-        if (organization != null){
-            equipment.setOrganization(organization);
-            LinkedList<Equipment> equipments = organization.getEquipments()
-        }
         equipment.setType(equipmentType);
         equipment.setStatus(input.isStatus());
-
-
-
         return equipment;
     }
 
@@ -283,7 +256,8 @@ class ConvertService {
             weaponRepository.save((Weapon) product);
         else if (type.contains("Plate"))
             plateRepository.save((Plate) product);
-        //todo Equipment
+        else if (type.contains("Equipment"))
+            equipmentRepository.save((Equipment) product);
 
         organizationRepository.save(organization);
         employeeRepository.save(employee);

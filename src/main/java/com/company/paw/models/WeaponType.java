@@ -7,10 +7,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
-import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"weapons"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"weaponNames"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,11 +17,7 @@ import java.util.List;
 @GraphQLType
 public class WeaponType extends AuditModel {
     private String name;
-    private long quantity;
 
     @DBRef
     private LinkedList<WeaponName> weaponNames;
-
-    @DBRef
-    private LinkedList<Weapon> weapons;
 }

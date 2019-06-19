@@ -1,7 +1,6 @@
 package com.company.paw.models;
 
 import com.company.paw.models.audits.AuditModel;
-import com.company.paw.models.audits.Product;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -9,10 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"plates", "reports", "weapons"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"plates", "reports", "weapons","requests"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

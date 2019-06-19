@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Document
 @GraphQLType

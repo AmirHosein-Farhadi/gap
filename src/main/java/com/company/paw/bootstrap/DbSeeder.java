@@ -23,7 +23,7 @@ public class DbSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        init();
+//        init();
     }
 
     void init() {
@@ -35,7 +35,7 @@ public class DbSeeder implements CommandLineRunner {
         City city = new City("تهران", state);
         if (!cityOptional.isPresent())
             city.setState(state);
-            cityRepository.save(city);
+        cityRepository.save(city);
 
         if (!stateOptional.isPresent()) {
             state.addSubCity(city);
@@ -70,17 +70,18 @@ public class DbSeeder implements CommandLineRunner {
                     .weapons(new LinkedList<>())
                     .employees(new LinkedList<>())
                     .reports(new LinkedList<>())
+                    .equipments(new LinkedList<>())
                     .build();
             organizationRepository.save(organization);
         }
 
-        WeaponType weaponType1 = new WeaponType("کمری", 1, new LinkedList<>(), new LinkedList<>());
+        WeaponType weaponType1 = new WeaponType("کمری", new LinkedList<>());
         saveWeaponType(weaponType1);
 
-        WeaponType weaponType2 = new WeaponType("نیمه سنگین", 1, new LinkedList<>(), new LinkedList<>());
+        WeaponType weaponType2 = new WeaponType("نیمه سنگین", new LinkedList<>());
         saveWeaponType(weaponType2);
 
-        WeaponType weaponType3 = new WeaponType("سنگین", 1, new LinkedList<>(), new LinkedList<>());
+        WeaponType weaponType3 = new WeaponType("سنگین", new LinkedList<>());
         saveWeaponType(weaponType3);
 
 

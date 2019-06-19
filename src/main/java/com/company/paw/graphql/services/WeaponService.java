@@ -5,11 +5,9 @@ import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.Employee;
 import com.company.paw.models.Organization;
 import com.company.paw.models.Weapon;
-import com.company.paw.models.WeaponType;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.OrganizationRepository;
 import com.company.paw.repositories.WeaponRepository;
-import com.company.paw.repositories.WeaponTypeRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -23,7 +21,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class WeaponService {
     private final WeaponRepository weaponRepository;
-    private final WeaponTypeRepository weaponTypeRepository;
     private final OrganizationRepository organizationRepository;
     private final EmployeeRepository employeeRepository;
     private final ConvertService convertService;
@@ -42,16 +39,18 @@ public class WeaponService {
     public Weapon addWeapon(ProductInput input) {
         Weapon weapon = convertService.setWeapon(new Weapon(), input);
         weapon.setReports(new LinkedList<>());
-        weapon.setCurrentUser(null);
         weaponRepository.save(weapon);
 
-        WeaponType weaponType = weaponTypeRepository.findById(weapon.getType().getId()).get();
-        weaponType.setQuantity(weaponType.getQuantity() + 1);
-        LinkedList<Weapon> weapons = weaponType.getWeapons();
-        weapons.add(weapon);
-        weaponType.setWeapons(weapons);
-        weaponTypeRepository.save(weaponType);
-
+        LinkedList<Weapon> weapons;
+        Organization organization =weapon.getOrganization();
+        if (organization != null) {
+            weapons = organization.getWeapons();
+            if (!weapons.contains(weapon)) {
+                weapons.add(weapon);
+                organization.setWeapons(weapons);
+                organizationRepository.save(organization);
+            }
+        }
         return weapon;
     }
 
@@ -76,14 +75,6 @@ public class WeaponService {
     @GraphQLMutation
     public Weapon deleteWeapon(String weaponId) {
         Optional<Weapon> weaponOptional = weaponRepository.findById(weaponId);
-
-        WeaponType weaponType = weaponTypeRepository.findById(weaponOptional.get().getType().getId()).get();
-        weaponType.setQuantity(weaponType.getQuantity() + -1);
-        LinkedList<Weapon> weapons = weaponType.getWeapons();
-        weapons.remove(weaponOptional.get());
-        weaponType.setWeapons(weapons);
-        weaponTypeRepository.save(weaponType);
-
         weaponOptional.ifPresent(weaponRepository::delete);
         return weaponOptional.orElse(null);
     }

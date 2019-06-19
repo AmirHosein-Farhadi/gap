@@ -64,4 +64,14 @@ public class EmployeeService {
         employeeOptional.ifPresent(employeeRepository::delete);
         return employeeOptional.orElse(null);
     }
+
+    @GraphQLMutation
+    public Employee editBullet(String employeeId, int numberOfBullets) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+        if (employeeOptional.isPresent()) {
+            employeeOptional.get().setBullets(employeeOptional.get().getBullets() + numberOfBullets);
+            return employeeOptional.get();
+        } else
+            return null;
+    }
 }

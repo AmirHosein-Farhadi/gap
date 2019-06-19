@@ -37,6 +37,7 @@ public class OrganizationService {
         organization.setEmployees(new LinkedList<>());
         organization.setWeapons(new LinkedList<>());
         organization.setPlates(new LinkedList<>());
+        organization.setEquipments(new LinkedList<>());
         return organizationRepository.save(organization);
     }
 
@@ -52,5 +53,15 @@ public class OrganizationService {
         return organizationRepository.save(
                 convertService.setOrganization(organizationRepository.findById(organizationId).get(), input)
         );
+    }
+
+    @GraphQLMutation
+    public Organization editBullets(String organizationId, int numberOfBullets) {
+        Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
+        if (organizationOptional.isPresent()) {
+            organizationOptional.get().setBulletsQuantity(organizationOptional.get().getBulletsQuantity() + numberOfBullets);
+            return organizationRepository.save(organizationOptional.get());
+        } else
+            return null;
     }
 }

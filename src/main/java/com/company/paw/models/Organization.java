@@ -7,10 +7,9 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.LinkedList;
-import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude = {"reports", "employees", "weapons", "plates"}, callSuper = false)
+@EqualsAndHashCode(exclude = {"reports", "employees", "weapons", "plates", "equipments"}, callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -38,7 +37,4 @@ public class Organization extends AuditModel {
 
     @DBRef
     private LinkedList<Equipment> equipments;
-//    todo to be decided after test
-//    private String username;
-//    private String password;
 }
