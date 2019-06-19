@@ -25,8 +25,18 @@ public class ReportsService {
     }
 
     @GraphQLQuery
-    public List<Report> productReports(String id){
+    public List<Report> productReports(String id) {
         return reportRepository.findByProductIdOrderByIdDesc(id);
+    }
+
+    @GraphQLQuery
+    public List<Report> organizationReports(String id) {
+        return reportRepository.findByOrganizationIdOrderByIdDesc(id);
+    }
+
+    @GraphQLQuery
+    public List<Report> employeeReports(String id) {
+        return reportRepository.findByEmployeeIdOrderByIdDesc(id);
     }
 
     List<Report> ReportsIdToReports(List<String> ReportsId) {

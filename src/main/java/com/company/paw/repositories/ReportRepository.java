@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends MongoRepository<Report, String> {
     List<Report> findByProductIdOrderByIdDesc(String id);
+    List<Report> findByEmployeeIdOrderByIdDesc(String id);
+    List<Report> findByOrganizationIdOrderByIdDesc(String id);
 }
