@@ -2,7 +2,6 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
-import com.company.paw.models.Organization;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.OrganizationRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
@@ -11,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,18 +34,7 @@ public class EmployeeService {
     @GraphQLMutation
     public Employee addEmployee(EmployeeInput employeeInput) {
         Employee employee = convertService.setEmployee(new Employee(), employeeInput);
-        employee.setReports(new LinkedList<>());
-        employee.setWeapons(new LinkedList<>());
-        employee.setPlates(new LinkedList<>());
-        employee.setRequests(new LinkedList<>());
         employeeRepository.save(employee);
-
-        Optional<Organization> organizationOptional = organizationRepository.findById(employeeInput.getOrganizationId());
-        if (organizationOptional.isPresent()) {
-            organizationOptional.get().getEmployees().add(employee);
-            organizationRepository.save(organizationOptional.get());
-        }
-
         return employee;
     }
 

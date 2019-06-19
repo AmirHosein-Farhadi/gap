@@ -3,7 +3,6 @@ package com.company.paw.graphql.services;
 import com.company.paw.graphql.InputTypes.ProductInput;
 import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.Employee;
-import com.company.paw.models.Organization;
 import com.company.paw.models.Weapon;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.OrganizationRepository;
@@ -13,7 +12,6 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,19 +36,7 @@ public class WeaponService {
     @GraphQLMutation
     public Weapon addWeapon(ProductInput input) {
         Weapon weapon = convertService.setWeapon(new Weapon(), input);
-        weapon.setReports(new LinkedList<>());
         weaponRepository.save(weapon);
-
-        LinkedList<Weapon> weapons;
-        Organization organization =weapon.getOrganization();
-        if (organization != null) {
-            weapons = organization.getWeapons();
-            if (!weapons.contains(weapon)) {
-                weapons.add(weapon);
-                organization.setWeapons(weapons);
-                organizationRepository.save(organization);
-            }
-        }
         return weapon;
     }
 
@@ -63,8 +49,7 @@ public class WeaponService {
     public Weapon recieveWeapon(ReportInput input) {
         Weapon weapon = weaponRepository.findById(input.getProductId()).orElse(null);
         Employee employee = employeeRepository.findById(input.getEmployeeId()).orElse(null);
-        Organization organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
-        return convertService.weaponInUse(weapon, employee, organization, input);
+        return convertService.weaponInUse(weapon, employee, input);
     }
 
     @GraphQLMutation

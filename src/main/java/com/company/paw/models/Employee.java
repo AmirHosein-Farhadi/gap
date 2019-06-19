@@ -3,14 +3,12 @@ package com.company.paw.models;
 import com.company.paw.models.audits.AuditModel;
 import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.LinkedList;
 
 @Data
-@EqualsAndHashCode(exclude = {"plates", "reports", "weapons","requests"}, callSuper = false)
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -34,16 +32,4 @@ public class Employee extends AuditModel {
     private Equipment shocker;
     private Equipment talkie;
     private int bullets;
-
-    @DBRef
-    private LinkedList<Report> reports;
-
-    @DBRef
-    private LinkedList<Request> requests;
-
-    @DBRef
-    private LinkedList<Weapon> weapons;
-
-    @DBRef
-    private LinkedList<Plate> plates;
 }

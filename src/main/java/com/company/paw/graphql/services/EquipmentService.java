@@ -10,7 +10,6 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,37 +48,23 @@ public class EquipmentService {
     @GraphQLMutation
     public Equipment addEquipment(ProductInput input, int equipmentType) {
         Equipment equipment = convertService.setEquipment(new Equipment(), equipmentType, input);
-        equipmentRepository.save(equipment);
-
         Organization organization = null;
         if (input.getOrganizationId() != null)
             organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
         assert organization != null;
-
         equipment.setOrganization(organization);
-        LinkedList<Equipment> equipments = organization.getEquipments();
-        equipments.add(equipment);
-        organization.setEquipments(equipments);
-        organizationRepository.save(organization);
-        return equipment;
+        return equipmentRepository.save(equipment);
     }
 
     @GraphQLMutation
     public Equipment editEquipment(String equipmentId, ProductInput input) {
         Equipment equipment = convertService.setEquipment(equipmentRepository.findById(equipmentId).get(), equipmentRepository.findById(equipmentId).get().getType(), input);
-        equipmentRepository.save(equipment);
-
         Organization organization = null;
         if (input.getOrganizationId() != null)
             organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
         assert organization != null;
-
         equipment.setOrganization(organization);
-        LinkedList<Equipment> equipments = organization.getEquipments();
-        equipments.add(equipment);
-        organization.setEquipments(equipments);
-        organizationRepository.save(organization);
-        return equipment;
+        return equipmentRepository.save(equipment);
     }
 
     @GraphQLMutation

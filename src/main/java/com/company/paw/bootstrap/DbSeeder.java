@@ -66,11 +66,6 @@ public class DbSeeder implements CommandLineRunner {
                     .state(state)
                     .city(city)
                     .address("میدان جهاد - بلوار فاطمی")
-                    .plates(new LinkedList<>())
-                    .weapons(new LinkedList<>())
-                    .employees(new LinkedList<>())
-                    .reports(new LinkedList<>())
-                    .equipments(new LinkedList<>())
                     .build();
             organizationRepository.save(organization);
         }

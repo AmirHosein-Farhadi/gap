@@ -3,7 +3,6 @@ package com.company.paw.graphql.services;
 import com.company.paw.graphql.InputTypes.PlateInput;
 import com.company.paw.graphql.InputTypes.ReportInput;
 import com.company.paw.models.Employee;
-import com.company.paw.models.Organization;
 import com.company.paw.models.Plate;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.OrganizationRepository;
@@ -14,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,32 +39,9 @@ public class PlateService {
     public Plate addPlate(PlateInput privatePlateInput, PlateInput backupPlateInput) {
         Plate privatePlate = convertService.setPlate(new Plate(), privatePlateInput);
         plateRepository.save(privatePlate);
-//org change
-        LinkedList<Plate> plates;
-        Organization organization = privatePlate.getOrganization();
-        log.error(privatePlate.getOrganization().getId());
-        if (organization != null) {
-            plates = organization.getPlates();
-            if (!plates.contains(privatePlate)) {
-                plates.add(privatePlate);
-                organization.setPlates(plates);
-                organizationRepository.save(organization);
-            }
-        }
 
         Plate backupPlate = convertService.setPlate(new Plate(), backupPlateInput);
         plateRepository.save(backupPlate);
-
-
-        organization = backupPlate.getOrganization();
-        if (organization != null) {
-            plates = organization.getPlates();
-            if (!plates.contains(backupPlate)) {
-                plates.add(backupPlate);
-                organization.setPlates(plates);
-                organizationRepository.save(organization);
-            }
-        }
 
         privatePlate.setMappedPlate(backupPlate);
         backupPlate.setMappedPlate(privatePlate);
@@ -101,13 +76,12 @@ public class PlateService {
     public Plate recievePlate(ReportInput input) {
         Plate plate = plateRepository.findById(input.getProductId()).get();
         Employee employee = employeeRepository.findById(input.getEmployeeId()).get();
-        Organization organization = organizationRepository.findById(input.getOrganizationId()).get();
 
         plate.getMappedPlate().setPlateStatus(2);
         plate.getMappedPlate().setCurrentUser(employee);
-        plate.getMappedPlate().setOrganization(organization);
+        plateRepository.save(plate.getMappedPlate());
 
-        return convertService.plateInUse(plate, employee, organization, input);
+        return convertService.plateInUse(plate, employee, input);
     }
 
     @GraphQLMutation

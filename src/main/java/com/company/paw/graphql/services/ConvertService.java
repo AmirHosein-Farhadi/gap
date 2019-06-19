@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -132,28 +130,17 @@ class ConvertService {
         return weapon;
     }
 
-    Plate plateInUse(Plate plate, Employee employee, Organization organization, ReportInput input) {
-        handelReport(plate, employee, organization, input);
+    Plate plateInUse(Plate plate, Employee employee, ReportInput input) {
+        reportRepository.save(setReport(new Report(), input));
         plate.setPlateStatus(2);
         plate.setCurrentUser(employee);
-
-        LinkedList<Plate> plates = employee.getPlates();
-        plates.add(plate);
-        employee.setPlates(plates);
-
         return plateRepository.save(plate);
     }
 
-    Weapon weaponInUse(Weapon weapon, Employee employee, Organization organization, ReportInput input) {
-        handelReport(weapon, employee, organization, input);
+    Weapon weaponInUse(Weapon weapon, Employee employee, ReportInput input) {
+        reportRepository.save(setReport(new Report(), input));
         weapon.setCurrentUser(employee);
         weaponRepository.save(weapon);
-
-        LinkedList<Weapon> weapons = employee.getWeapons();
-        weapons.add(weapon);
-        employee.setWeapons(weapons);
-        employeeRepository.save(employee);
-
         return weaponRepository.save(weapon);
     }
 
@@ -172,10 +159,8 @@ class ConvertService {
         assert product != null;
 
         Employee employee = product.getCurrentUser();
-        Organization organization = product.getOrganization();
-
         product.setCurrentUser(null);
-        product.setOrganization(null);
+
         String type = product.getClass().getName();
         if (type.contains("Weapon"))
             weaponRepository.save((Weapon) product);
@@ -184,18 +169,7 @@ class ConvertService {
         else if (type.contains("Equipment"))
             equipmentRepository.save((Equipment) product);
 
-        LinkedList<Weapon> weapons;
-        LinkedList<Plate> plates;
-
-        if (type.contains("Weapon")) {
-            weapons = employee.getWeapons();
-            weapons.remove(product);
-            employee.setWeapons(weapons);
-        } else if (type.contains("Plate")) {
-            plates = employee.getPlates();
-            plates.remove(product);
-            employee.setPlates(plates);
-        } else if (type.contains("Equipment")) {
+        if (type.contains("Equipment")) {
             Equipment equipment = (Equipment) product;
             int equipmentType = equipment.getType();
             if (equipmentType == 1)
@@ -205,12 +179,9 @@ class ConvertService {
             else if (equipmentType == 3)
                 employee.setTalkie(null);
         }
-
         employeeRepository.save(employee);
-        organizationRepository.save(organization);
 
-        List<Report> reports = product.getReports();
-        Report report = reports.get(reports.size() - 1);
+        Report report = reportRepository.findByProductIdOrderByIdDesc(productId).get(0);
         report.setReturnStatus(returnStatus);
         report.setReturnTime(stringToDate(returnDate));
         report.setReturnDescription(returnDescription);
@@ -235,32 +206,6 @@ class ConvertService {
         equipment.setType(equipmentType);
         equipment.setStatus(input.isStatus());
         return equipment;
-    }
-
-    private void handelReport(Product product, Employee employee, Organization organization, ReportInput input) {
-        Report report = setReport(new Report(), input);
-        LinkedList<Report> reports = product.getReports();
-        reports.add(report);
-        product.setReports(reports);
-
-        reports = employee.getReports();
-        reports.add(report);
-        employee.setReports(reports);
-
-        reports = organization.getReports();
-        reports.add(report);
-        organization.setReports(reports);
-
-        String type = product.getClass().getName();
-        if (type.contains("Weapon"))
-            weaponRepository.save((Weapon) product);
-        else if (type.contains("Plate"))
-            plateRepository.save((Plate) product);
-        else if (type.contains("Equipment"))
-            equipmentRepository.save((Equipment) product);
-
-        organizationRepository.save(organization);
-        employeeRepository.save(employee);
     }
 
     private Report setReport(Report report, ReportInput input) {

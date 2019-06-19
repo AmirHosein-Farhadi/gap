@@ -24,6 +24,11 @@ public class ReportsService {
         return reportRepository.findById(id).orElse(null);
     }
 
+    @GraphQLQuery
+    public List<Report> productReports(String id){
+        return reportRepository.findByProductIdOrderByIdDesc(id);
+    }
+
     List<Report> ReportsIdToReports(List<String> ReportsId) {
         return ReportsId.stream()
                 .map(report -> reportRepository.findById(report).orElse(null))
