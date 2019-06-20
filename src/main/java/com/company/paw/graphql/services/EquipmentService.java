@@ -2,9 +2,7 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.ProductInput;
 import com.company.paw.models.Equipment;
-import com.company.paw.models.Organization;
 import com.company.paw.repositories.EquipmentRepository;
-import com.company.paw.repositories.OrganizationRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -17,7 +15,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
-    private final OrganizationRepository organizationRepository;
     private final ConvertService convertService;
 
     @GraphQLQuery
@@ -47,24 +44,18 @@ public class EquipmentService {
 
     @GraphQLMutation
     public Equipment addEquipment(ProductInput input, int equipmentType) {
-        Equipment equipment = convertService.setEquipment(new Equipment(), equipmentType, input);
-        Organization organization = null;
-        if (input.getOrganizationId() != null)
-            organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
-        assert organization != null;
-        equipment.setOrganization(organization);
-        return equipmentRepository.save(equipment);
+        return equipmentRepository.save(convertService.setEquipment(new Equipment(), equipmentType, input));
     }
 
     @GraphQLMutation
     public Equipment editEquipment(String equipmentId, ProductInput input) {
-        Equipment equipment = convertService.setEquipment(equipmentRepository.findById(equipmentId).get(), equipmentRepository.findById(equipmentId).get().getType(), input);
-        Organization organization = null;
-        if (input.getOrganizationId() != null)
-            organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
-        assert organization != null;
-        equipment.setOrganization(organization);
-        return equipmentRepository.save(equipment);
+        Equipment equipment;
+        if (equipmentRepository.findById(equipmentId).isPresent())
+            equipment = equipmentRepository.findById(equipmentId).get();
+        else
+            return null;
+
+        return equipmentRepository.save(convertService.setEquipment(equipment, equipment.getType(), input));
     }
 
     @GraphQLMutation

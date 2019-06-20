@@ -201,8 +201,20 @@ class ConvertService {
     }
 
     Equipment setEquipment(Equipment equipment, int equipmentType, ProductInput input) {
+        Organization organization = null;
+        if (input.getOrganizationId() != null)
+            organization = organizationRepository.findById(input.getOrganizationId()).orElse(null);
+        assert organization != null;
+        equipment.setOrganization(organization);
+
         if (input.getSerial() != null)
             equipment.setSerial(input.getSerial());
+        if (input.getWeaponCardExpirationDate() != null)
+            equipment.setWeaponCardExpirationDate(stringToDate(input.getWeaponCardExpirationDate()));
+        if (input.getWeaponCardNumber() != null)
+            equipment.setWeaponCardNumber(input.getWeaponCardNumber());
+        if (input.getWeaponCardImageId() != null)
+            equipment.setWeaponCardImage(imageRepository.findById(input.getWeaponCardImageId()).orElse(null));
         equipment.setType(equipmentType);
         equipment.setStatus(input.isStatus());
         return equipment;

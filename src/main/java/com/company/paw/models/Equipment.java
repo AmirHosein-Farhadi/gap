@@ -5,6 +5,8 @@ import io.leangen.graphql.annotations.types.GraphQLType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
@@ -14,4 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @GraphQLType
 public class Equipment extends Product {
     int type; //1 for spray,    2 for shocker,  3 for talkie.
+    private Date weaponCardExpirationDate;
+    private Image weaponCardImage;
+    private String weaponCardNumber;
 }

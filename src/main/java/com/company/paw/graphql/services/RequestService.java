@@ -2,7 +2,6 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.RequestInput;
 import com.company.paw.models.Request;
-import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.RequestRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -17,14 +16,12 @@ import java.util.Optional;
 public class RequestService {
     private final RequestRepository requestRepository;
     private final ConvertService convertService;
-    private final EmployeeRepository employeeRepository;
 
     @GraphQLQuery
     public List<Request> allRequests() {
         return requestRepository.findAll();
     }
 
-    //todo with better implementation
     @GraphQLQuery
     public List<Request> handeledRequests() {
         return requestRepository.findByReportNotNull();
@@ -47,14 +44,18 @@ public class RequestService {
 
     @GraphQLMutation
     public Request addRequest(RequestInput input) {
-        Request request = convertService.setRequest(new Request(), input);
-        requestRepository.save(request);
-        return request;
+        return requestRepository.save(convertService.setRequest(new Request(), input));
     }
 
     @GraphQLMutation
     public Request editRequest(String requestId, RequestInput input) {
-        return requestRepository.save(convertService.setRequest(requestRepository.findById(requestId).get(), input));
+        Request request;
+        if (requestRepository.findById(requestId).isPresent())
+            request = requestRepository.findById(requestId).get();
+        else
+            return null;
+
+        return requestRepository.save(convertService.setRequest(request, input));
     }
 
     @GraphQLMutation
