@@ -17,6 +17,8 @@ import java.util.Date;
 @GraphQLType
 public class Report extends AuditModel {
     private Product product;
+    private Weapon weapon;
+    private Plate plate;
     private Employee employee;
     private Organization organization;
     private Request request;

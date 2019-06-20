@@ -1,7 +1,9 @@
 package com.company.paw.graphql.services;
 
 import com.company.paw.models.Equipment;
+import com.company.paw.models.Plate;
 import com.company.paw.models.Report;
+import com.company.paw.models.Weapon;
 import com.company.paw.repositories.ReportRepository;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -34,7 +36,10 @@ public class ReportsService {
 
     @GraphQLQuery
     public Map<String, List<Report>> employeeReports(String id) {
-        List<Report> reports = reportRepository.findByEmployeeId(id);
+        return listToMap(reportRepository.findByEmployeeId(id));
+    }
+
+    private Map<String, List<Report>> listToMap(List<Report> reports) {
         Map<String, List<Report>> employeeMap = new HashMap<>();
         List<Report> weapons = new ArrayList<>();
         List<Report> plates = new ArrayList<>();
@@ -43,11 +48,13 @@ public class ReportsService {
         List<Report> talkies = new ArrayList<>();
 
         for (Report report : reports) {
-            if (report.getProduct().getClass().getName().contains("Weapon"))
+            if (report.getProduct().getClass().getName().contains("Weapon")) {
+                report.setWeapon((Weapon) report.getProduct());
                 weapons.add(report);
-            else if (report.getProduct().getClass().getName().contains("Plate"))
+            } else if (report.getProduct().getClass().getName().contains("Plate")) {
+                report.setPlate((Plate) report.getProduct());
                 plates.add(report);
-            else {
+            } else {
                 if (((Equipment) report.getProduct()).getType() == 1)
                     sprays.add(report);
                 else if (((Equipment) report.getProduct()).getType() == 2)
