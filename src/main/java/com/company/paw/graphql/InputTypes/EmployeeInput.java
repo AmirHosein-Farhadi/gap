@@ -23,5 +23,4 @@ public class EmployeeInput {
     private String sprayId;
     private String shockerId;
     private String talkieId;
-    int bullets;
 }

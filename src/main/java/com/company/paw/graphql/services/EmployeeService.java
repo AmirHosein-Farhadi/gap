@@ -2,12 +2,12 @@ package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.EmployeeInput;
 import com.company.paw.models.Employee;
+import com.company.paw.models.Organization;
 import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.OrganizationRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final OrganizationRepository organizationRepository;
@@ -33,16 +32,18 @@ public class EmployeeService {
 
     @GraphQLMutation
     public Employee addEmployee(EmployeeInput employeeInput) {
-        Employee employee = convertService.setEmployee(new Employee(), employeeInput);
-        employeeRepository.save(employee);
-        return employee;
+        return employeeRepository.save(convertService.setEmployee(new Employee(), employeeInput));
     }
 
     @GraphQLMutation
     public Employee updateEmployee(String employeeId, EmployeeInput employeeInput) {
-        return employeeRepository.save(
-                convertService.setEmployee(employeeRepository.findById(employeeId).get(), employeeInput)
-        );
+        Employee employee;
+        if (employeeRepository.findById(employeeId).isPresent())
+            employee = employeeRepository.findById(employeeId).get();
+        else
+            return null;
+
+        return employeeRepository.save(convertService.setEmployee(employee, employeeInput));
     }
 
     @GraphQLMutation
@@ -53,11 +54,15 @@ public class EmployeeService {
     }
 
     @GraphQLMutation
-    public Employee editBullet(String employeeId, int numberOfBullets) {
+    public Employee editEmployeeBullet(String employeeId, int numberOfBullets) {
         Optional<Employee> employeeOptional = employeeRepository.findById(employeeId);
+        Organization organization;
         if (employeeOptional.isPresent()) {
             employeeOptional.get().setBullets(employeeOptional.get().getBullets() + numberOfBullets);
-            return employeeOptional.get();
+            organization = employeeOptional.get().getOrganization();
+            organization.setBulletsQuantity(organization.getBulletsQuantity() + (numberOfBullets * -1));
+            organizationRepository.save(organization);
+            return employeeRepository.save(employeeOptional.get());
         } else
             return null;
     }

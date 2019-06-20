@@ -191,12 +191,18 @@ class ConvertService {
     }
 
     Request setRequest(Request request, RequestInput input) {
-        request.setDescription(input.getDescription());
-        request.setTitle(input.getTitle());
-        request.setDate(stringToDate(input.getDateOnImage()));
-        request.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
-        request.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
-        request.setImage(imageRepository.findById(input.getImageId()).orElse(null));
+        if (input.getDescription() != null)
+            request.setDescription(input.getDescription());
+        if (input.getTitle() != null)
+            request.setTitle(input.getTitle());
+        if (input.getDateOnImage() != null)
+            request.setDate(stringToDate(input.getDateOnImage()));
+        if (input.getEmployeeId() != null)
+            request.setEmployee(employeeRepository.findById(input.getEmployeeId()).orElse(null));
+        if (input.getOrganizationId() != null)
+            request.setOrganization(organizationRepository.findById(input.getOrganizationId()).orElse(null));
+        if (input.getImageId() != null)
+            request.setImage(imageRepository.findById(input.getImageId()).orElse(null));
         return request;
     }
 

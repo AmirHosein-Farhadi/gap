@@ -50,10 +50,10 @@ public class OrganizationService {
     }
 
     @GraphQLMutation
-    public Organization editBullets(String organizationId, int numberOfBullets) {
+    public Organization editOrganizationBullets(String organizationId, int numberOfBullets) {
         Optional<Organization> organizationOptional = organizationRepository.findById(organizationId);
         if (organizationOptional.isPresent()) {
-            organizationOptional.get().setBulletsQuantity(organizationOptional.get().getBulletsQuantity() + numberOfBullets);
+            organizationOptional.get().setBulletsQuantity(numberOfBullets);
             return organizationRepository.save(organizationOptional.get());
         } else
             return null;

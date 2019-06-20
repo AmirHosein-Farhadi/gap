@@ -1,9 +1,9 @@
 package com.company.paw.graphql.services;
 
-import com.company.paw.repositories.CityRepository;
-import com.company.paw.repositories.StateRepository;
 import com.company.paw.models.City;
 import com.company.paw.models.State;
+import com.company.paw.repositories.CityRepository;
+import com.company.paw.repositories.StateRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import lombok.AllArgsConstructor;
@@ -31,6 +31,6 @@ public class CityService {
     @GraphQLMutation
     public City addCity(String name, String stateId) {
         Optional<State> stateOptional = stateRepository.findById(stateId);
-        return cityRepository.save(new City(name, stateOptional.get()));
+        return cityRepository.save(new City(name, stateOptional.orElse(null)));
     }
 }
