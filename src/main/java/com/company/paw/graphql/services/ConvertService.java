@@ -140,7 +140,6 @@ class ConvertService {
     Weapon weaponInUse(Weapon weapon, Employee employee, ReportInput input) {
         reportRepository.save(setReport(new Report(), input));
         weapon.setCurrentUser(employee);
-        weaponRepository.save(weapon);
         return weaponRepository.save(weapon);
     }
 
@@ -231,9 +230,10 @@ class ConvertService {
         Optional<Weapon> weaponOptional = weaponRepository.findById(input.getProductId());
         Optional<Equipment> equipmentOptional = equipmentRepository.findById(input.getProductId());
 
-        if (plateOptional.isPresent())
+        if (plateOptional.isPresent()) {
+            report.setPlate(plateOptional.get());
             report.setProduct(plateOptional.get());
-        else if (weaponOptional.isPresent())
+        } else if (weaponOptional.isPresent())
             report.setProduct(weaponOptional.get());
         else equipmentOptional.ifPresent(report::setProduct);
 

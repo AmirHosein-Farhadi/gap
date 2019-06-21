@@ -48,10 +48,14 @@ public class ReportsService {
         return listToMap(reportRepository.findByEmployeeId(id));
     }
 
+    @GraphQLQuery
+    public List<Report> employeePlatesReports(String id) {
+        return reportRepository.findByPlateNotNullAndEmployeeId(id);
+    }
+
     private Map<String, List<Report>> listToMap(List<Report> reports) {
         Map<String, List<Report>> employeeMap = new HashMap<>();
         List<Report> weapons = new ArrayList<>();
-        List<Report> plates = new ArrayList<>();
         List<Report> sprays = new ArrayList<>();
         List<Report> shockers = new ArrayList<>();
         List<Report> talkies = new ArrayList<>();
@@ -60,10 +64,7 @@ public class ReportsService {
             if (report.getProduct().getClass().getName().contains("Weapon")) {
                 report.setWeapon((Weapon) report.getProduct());
                 weapons.add(report);
-            } else if (report.getProduct().getClass().getName().contains("Plate")) {
-                report.setPlate((Plate) report.getProduct());
-                plates.add(report);
-            } else {
+            } else if (report.getProduct().getClass().getName().contains("Equipment")) {
                 if (((Equipment) report.getProduct()).getType() == 1)
                     sprays.add(report);
                 else if (((Equipment) report.getProduct()).getType() == 2)
@@ -73,7 +74,6 @@ public class ReportsService {
             }
         }
         employeeMap.put("Weapons", weapons);
-        employeeMap.put("Plates", plates);
         employeeMap.put("Sprays", sprays);
         employeeMap.put("Shockers", shockers);
         employeeMap.put("Talkies", talkies);

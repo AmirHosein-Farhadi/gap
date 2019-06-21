@@ -11,4 +11,5 @@ public interface RequestRepository extends MongoRepository<Request, String> {
     List<Request> findByReportNotNull();
     List<Request> findByReportIsNull();
     List<Request> findByEmployeeId(String id);
+    List<Request> findByOrganizationId(String id);
 }

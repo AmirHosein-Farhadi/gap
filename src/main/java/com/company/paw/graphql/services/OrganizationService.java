@@ -1,8 +1,8 @@
 package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.OrganizationInput;
-import com.company.paw.models.Organization;
-import com.company.paw.repositories.OrganizationRepository;
+import com.company.paw.models.*;
+import com.company.paw.repositories.*;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
@@ -17,6 +17,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrganizationService {
     private final OrganizationRepository organizationRepository;
+    private final RequestRepository requestRepository;
+    private final EmployeeRepository employeeRepository;
+    private final PlateRepository plateRepository;
+    private final WeaponRepository weaponRepository;
+    private final EquipmentRepository equipmentRepository;
     private final ConvertService convertService;
 
     @GraphQLQuery
@@ -27,6 +32,29 @@ public class OrganizationService {
     @GraphQLQuery
     public Organization getOrganization(String organizationId) {
         return organizationRepository.findById(organizationId).orElse(null);
+    }
+
+    @GraphQLQuery
+    public List<Request> organizationRequests(String organizationId) {
+        return requestRepository.findByOrganizationId(organizationId);
+    }
+
+    @GraphQLQuery
+    public List<Employee> organizationEmployees(String organizationId) {
+        return employeeRepository.findByOrganizationId(organizationId);
+    }
+
+    @GraphQLQuery
+    public List<Plate> organizationPlates(String organizationId) {
+        return plateRepository.findByOrganizationId(organizationId);
+    }
+    @GraphQLQuery
+    public List<Weapon> organizationWeapons(String organizationId) {
+        return weaponRepository.findByOrganizationId(organizationId);
+    }
+    @GraphQLQuery
+    public List<Equipment> organizationEquipments(String organizationId) {
+        return equipmentRepository.findByOrganizationId(organizationId);
     }
 
     @GraphQLMutation

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EquipmentRepository extends MongoRepository<Equipment, String> {
     List<Equipment> findByType(int type);
+
+    List<Equipment> findByOrganizationId(String id);
 }
