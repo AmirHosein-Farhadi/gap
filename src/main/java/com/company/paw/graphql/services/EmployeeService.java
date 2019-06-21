@@ -26,6 +26,11 @@ public class EmployeeService {
     }
 
     @GraphQLQuery
+    public List<Employee> organizationEmployees(String organizationId) {
+        return employeeRepository.findByOrganizationId(organizationId);
+    }
+
+    @GraphQLQuery
     public Employee getEmployee(String id) {
         return employeeRepository.findById(id).orElse(null);
     }
