@@ -1,7 +1,10 @@
 package com.company.paw.graphql.services;
 
 import com.company.paw.graphql.InputTypes.ProductInput;
+import com.company.paw.graphql.InputTypes.ReportInput;
+import com.company.paw.models.Employee;
 import com.company.paw.models.Equipment;
+import com.company.paw.repositories.EmployeeRepository;
 import com.company.paw.repositories.EquipmentRepository;
 import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
@@ -15,6 +18,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class EquipmentService {
     private final EquipmentRepository equipmentRepository;
+    private final EmployeeRepository employeeRepository;
     private final ConvertService convertService;
 
     @GraphQLQuery
@@ -63,5 +67,18 @@ public class EquipmentService {
         Optional<Equipment> equipmentOptional = equipmentRepository.findById(equipmentId);
         equipmentOptional.ifPresent(equipmentRepository::delete);
         return equipmentOptional.orElse(null);
+    }
+
+    @GraphQLMutation
+    public Equipment recieveEquipment(ReportInput input) {
+        Equipment equipment = equipmentRepository.findById(input.getProductId()).orElse(null);
+        assert equipment != null;
+        Employee employee = employeeRepository.findById(input.getEmployeeId()).orElse(null);
+        return convertService.equipmentInUse(equipment, employee, input);
+    }
+
+    @GraphQLMutation
+    public Equipment returnEquipment(String equipmentId, boolean returnStatus, String returnDate, String returnDescription) {
+        return (Equipment) convertService.returnProduct(equipmentId, returnStatus, returnDate, returnDescription);
     }
 }

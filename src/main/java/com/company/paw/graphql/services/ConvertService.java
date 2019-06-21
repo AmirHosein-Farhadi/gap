@@ -143,6 +143,12 @@ class ConvertService {
         return weaponRepository.save(weapon);
     }
 
+    Equipment equipmentInUse(Equipment equipment, Employee employee, ReportInput input) {
+        reportRepository.save(setReport(new Report(), input));
+        equipment.setCurrentUser(employee);
+        return equipmentRepository.save(equipment);
+    }
+
     Product returnProduct(String productId, boolean returnStatus, String returnDate, String returnDescription) {
         Optional<Plate> plateOptional = plateRepository.findById(productId);
         Optional<Weapon> weaponOptional = weaponRepository.findById(productId);
