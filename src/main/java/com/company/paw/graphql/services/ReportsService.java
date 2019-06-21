@@ -20,8 +20,9 @@ public class ReportsService {
     private final ReportRepository reportRepository;
 
     @GraphQLQuery
-    public List<Report> allReports() {
-        return reportRepository.findAll();
+    public Map<String, List<Report>> allReports() {
+        List<Report> reports = reportRepository.findAll();
+        return listToMap(reports);
     }
 
     @GraphQLQuery
@@ -31,7 +32,15 @@ public class ReportsService {
 
     @GraphQLQuery
     public List<Report> productReports(String id) {
-        return reportRepository.findByProductIdOrderByIdDesc(id);
+        List<Report> reports = reportRepository.findByProductIdOrderByIdDesc(id);
+        for (Report report : reports) {
+            if (report.getProduct().getClass().getName().contains("Plate"))
+                report.setPlate((Plate) report.getProduct());
+            else if (report.getProduct().getClass().getName().contains("Weapon")) {
+                report.setWeapon((Weapon) report.getProduct());
+            }
+        }
+        return reports;
     }
 
     @GraphQLQuery
